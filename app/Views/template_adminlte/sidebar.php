@@ -53,6 +53,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/kriteria'); ?>" class="nav-link <?= isset($m_kriteria) ? $m_kriteria : ''; ?>">
+                        <i class="nav-icon fas fa-hashtag"></i>
+                        <p>
+                            Kriteria
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item <?= isset($m_open) ? $m_open : ''; ?>">
                     <a href="#" class="nav-link <?= isset($mm_berita) ? $mm_berita : ''; ?>">
                         <i class="nav-icon fas fa-edit"></i>

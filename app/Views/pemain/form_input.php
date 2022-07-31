@@ -22,7 +22,7 @@
 <div class="form-group row mode2">
     <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
     <div class="col-sm-9 item">
-        <textarea name="alamat[]" id="alamat" cols="30" rows="10" class="textarea" placeholder="Masukan alamat pemain..."><?= @$get->alamat ?></textarea>
+        <input type="text" class="form-control" id="alamat" name="alamat[]" value="<?= @$get->no_hp ?>" placeholder="Contoh : Jln. Rajawali No. 120" required />
     </div>
 </div>
 <div class="form-group row mode2">
@@ -57,26 +57,4 @@
             'overwriteInitial': true
         })
     <?php endif ?>
-    $('.textarea').summernote({
-        inheritPlaceholder: true,
-        disableDragAndDrop: true,
-        codeviewFilter: false,
-        codeviewIframeFilter: true,
-        tabDisable: true,
-        popover: {
-            air: [
-                ['color', ['color']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['para', ['ul', 'paragraph']],
-                ['table', ['table']],
-            ]
-        },
-        toolbar: [
-            // [groupName, [list of button]]
-            ['style', ['bold', 'italic', 'underline']],
-            // ['font', ['fontname', 'fontsize', 'fontsizeunit', 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-            ['color', ['color']],
-            // ['para', ['ul', 'ol', 'paragraph', 'table']],
-        ]
-    })
 </script>
