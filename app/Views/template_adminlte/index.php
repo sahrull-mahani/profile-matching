@@ -1,4 +1,3 @@
-<?php $session = \Config\Services::session(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -151,13 +150,11 @@
     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <img class="profile-user-img img-fluid img-circle" src="<?= $session->foto; ?>" alt="User profile picture">
+                <img class="profile-user-img img-fluid img-circle" src="<?= session('foto'); ?>" alt="User profile picture">
             </div>
         </div>
     </div>
     <!-- jQuery -->
-    <!-- <script src="<? //= base_url('assets/plugins/jquery/jquery.min.js') 
-                        ?>"></script> -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
@@ -198,80 +195,7 @@
     <?php if (isset($statistikJS)) : ?>
         <script src="<?= base_url('assets/dist/js/statistik.js') ?>"></script>
     <?php endif ?>
-    <script src="<?= base_url("assets/plugins/tinymce/tinymce.min.js"); ?>"></script>
     <script>
-        $(function() {
-            bsCustomFileInput.init();
-        });
-        tinymce.init({
-            selector: "textarea",
-            theme: "modern",
-            height: 1000,
-            relative_urls: false,
-            remove_script_host: false,
-            convert_urls: false,
-            codesample_languages: [{
-                    text: 'HTML/XML',
-                    value: 'markup'
-                },
-                {
-                    text: 'JavaScript',
-                    value: 'javascript'
-                },
-                {
-                    text: 'CSS',
-                    value: 'css'
-                },
-                {
-                    text: 'PHP',
-                    value: 'php'
-                },
-                {
-                    text: 'Ruby',
-                    value: 'ruby'
-                },
-                {
-                    text: 'Python',
-                    value: 'python'
-                },
-                {
-                    text: 'Java',
-                    value: 'java'
-                },
-                {
-                    text: 'C',
-                    value: 'c'
-                },
-                {
-                    text: 'C#',
-                    value: 'csharp'
-                },
-                {
-                    text: 'C++',
-                    value: 'cpp'
-                }
-            ],
-            plugins: [
-                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount visualblocks visualchars media nonbreaking codesample",
-                "table contextmenu directionality emoticons paste textcolor responsivefilemanager code imagetools autoresize"
-            ],
-            toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-            toolbar2: "| responsivefilemanager | link unlink anchor | codesample image media emoticons | forecolor backcolor | print preview code ",
-            image_advtab: true,
-
-            external_filemanager_path: "<?= site_url('filemanager/'); ?>",
-            filemanager_title: "Responsive Filemanager",
-            external_plugins: {
-                "filemanager": "<?= base_url('filemanager/plugin.min.js'); ?>"
-            },
-            setup: function(editor) {
-                editor.on('change', function() {
-                    tinymce.triggerSave();
-                });
-            }
-        });
-
         function previewImg(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

@@ -29,6 +29,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Pemain
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item <?= isset($m_open) ? $m_open : ''; ?>">
                     <a href="#" class="nav-link <?= isset($mm_berita) ? $mm_berita : ''; ?>">
                         <i class="nav-icon fas fa-edit"></i>

@@ -22,7 +22,7 @@ class Home extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Dashboard | Stunting',
+            'title' => 'Dashboard | Profile Matching',
             'statistikJS' => true,
             'berita' => $this->beritam->findAll(),
             'photo' => $this->photom->findAll(),
