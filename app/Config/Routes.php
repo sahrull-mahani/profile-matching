@@ -31,16 +31,16 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Web::index');
-$routes->get('web/berita', 'Web::berita');
-$routes->get('web/berita/detail_b/(:num)', 'Web::detail_b/$1');
-$routes->get('img_thumbs/(:segment)', 'Berita::img_thumb/$1');
-$routes->get('img_mediums/(:segment)', 'Berita::img_medium/$1');
-$routes->get('web/galery', 'Web::galery');
-$routes->get('web/video', 'Web::video');
-$routes->get('web/statistik', 'Web::statistik');
-$routes->get('web/api', 'Web::api');
-$routes->add('filemanager/(:any)', 'Filemanager::run');
+// $routes->get('/', 'Auth::index');
+// $routes->get('web/berita', 'Web::berita');
+// $routes->get('web/berita/detail_b/(:num)', 'Web::detail_b/$1');
+// $routes->get('img_thumbs/(:segment)', 'Berita::img_thumb/$1');
+// $routes->get('img_mediums/(:segment)', 'Berita::img_medium/$1');
+// $routes->get('web/galery', 'Web::galery');
+// $routes->get('web/video', 'Web::video');
+// $routes->get('web/statistik', 'Web::statistik');
+// $routes->get('web/api', 'Web::api');
+// $routes->add('filemanager/(:any)', 'Filemanager::run');
 
 $routes->group('', ['filter' => 'role:users'], function ($routes) {
     $routes->get('post-berita', 'Berita::post');

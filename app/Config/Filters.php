@@ -40,7 +40,7 @@ class Filters extends BaseConfig
             'honeypot',
             // 'csrf',
             'invalidchars',
-            'authfilter' => ['except' => ['img_thumbs/*', 'web/*', 'img_mediums/*']],
+            'authfilter',
         ],
         'after' => [
             'toolbar',

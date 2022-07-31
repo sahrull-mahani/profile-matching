@@ -1,9 +1,8 @@
-<?php $session = \Config\Services::session(); ?>
 <aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?= base_url(); ?>" class="brand-link">
         <img src="<?= base_url('assets/dist/img/logo-bolmut.png'); ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8" />
-        <span class="brand-text font-weight-light">Molihuto Stunting </span>
+        <span class="brand-text font-weight-light">Posisi Pemain</span>
     </a>
 
     <!-- Sidebar -->
@@ -11,10 +10,10 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?= $session->get('foto') ?>" class="img-circle elevation-2" alt="User Image" data-toggle="modal" data-target=".bd-example-modal-sm" />
+                <img src="<?= session('foto') ?>" class="img-circle elevation-2" alt="User Image" data-toggle="modal" data-target=".bd-example-modal-sm" />
             </div>
             <div class="info">
-                <a href="<?= site_url('profile'); ?>" class="d-block"><?= $session->get('nama_user') ?></a>
+                <a href="<?= site_url('profile'); ?>" class="d-block"><?= session('nama_user') ?></a>
             </div>
         </div>
         <!-- Sidebar Menu -->
@@ -149,7 +148,6 @@
     <!-- /.sidebar -->
 
     <div class="sidebar-custom">
-        <a href="<?= site_url('setting'); ?>" class="btn btn-link"><i class="fas fa-cogs"></i></a>
         <a href="<?= site_url('auth/logout'); ?>" class="btn btn-danger hide-on-collapse pos-right">log Out <i class="fas fa-sign-out-alt"></i></a>
     </div>
 </aside>
