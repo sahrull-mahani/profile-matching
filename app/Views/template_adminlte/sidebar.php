@@ -61,6 +61,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/nilai_gap'); ?>" class="nav-link <?= isset($m_nilai_gap) ? $m_nilai_gap : ''; ?>">
+                        <i class="nav-icon fa fa-adjust"></i>
+                        <p>
+                            GAP (Selisih)
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item <?= isset($m_open) ? $m_open : ''; ?>">
                     <a href="#" class="nav-link <?= isset($mm_berita) ? $mm_berita : ''; ?>">
                         <i class="nav-icon fas fa-edit"></i>

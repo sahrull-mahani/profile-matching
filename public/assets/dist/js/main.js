@@ -4,6 +4,19 @@ $(document).ready(function () {
     var ace = {}
     ace[token] = csrf_hash
     $.ajaxSetup({ data: ace })
+
+    $('#aspek').on('change', function() {
+        let val = $(this).val()
+        $.ajax({
+            url: location.origin + '/Nilai_gap/dataGap',
+            data: {value : val},
+            type: 'post',
+            success: function(res) {
+                let data = $.parseJSON(res)
+                $('#data-gap').html(data.nilai)
+            }
+        })
+    })
 })
 
 var $table = $('#table')
