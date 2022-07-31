@@ -37,6 +37,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/tim'); ?>" class="nav-link <?= isset($m_tim) ? $m_tim : ''; ?>">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Tim
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item <?= isset($m_open) ? $m_open : ''; ?>">
                     <a href="#" class="nav-link <?= isset($mm_berita) ? $mm_berita : ''; ?>">
                         <i class="nav-icon fas fa-edit"></i>

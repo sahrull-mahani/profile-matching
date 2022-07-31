@@ -6,13 +6,6 @@
             <input type="text" name="nama_user" value="<?= isset($user->nama_user) ? $user->nama_user : ''; ?>" id="nama_user" class="form-control" required="required" />
         </div>
     </div>
-    <div class="form-group row mode2">
-        <label for="id_peg" class="col-sm-3 col-form-label">SKPD</label>
-        <div class="col-sm-9 item">
-            <?php $defaults = array('none' => 'Pilih SKPD');
-            echo form_dropdown('skpd_id', $defaults + skpd(), isset($user->skpd_id) ? $user->skpd_id : '', 'class="form-control" id="skpd_id" required'); ?>
-        </div>
-    </div>
     <?php if ($identity_column !== 'email') { ?>
         <div class="form-group row mode2">
             <?= form_label(lang('Auth.create_user_identity_label'), 'identity', array("class" => "col-sm-3 col-form-label")); ?>

@@ -136,11 +136,11 @@ class Auth extends BaseController
     }
     public function save()
     {
-        $this->validation->setRule(
-            'skpd_id',
-            'Field SKPD Tidak Boleh Kosong',
-            'required'
-        );
+        // $this->validation->setRule(
+        //     'skpd_id',
+        //     'Field SKPD Tidak Boleh Kosong',
+        //     'required'
+        // );
         $this->validation->setRule(
             'phone',
             lang('Auth.edit_user_validation_phone_label'),
@@ -183,7 +183,6 @@ class Auth extends BaseController
                         'nama_user' => $this->request->getPost('nama_user'),
                         'img' => $img,
                         'phone' => $this->request->getPost('phone'),
-                        'skpd_id' => $this->request->getPost('skpd_id'),
                     ];
 
                     if (
@@ -191,7 +190,8 @@ class Auth extends BaseController
                             $identity,
                             $password,
                             $email,
-                            $additionalData
+                            $additionalData,
+                            [3]
                         )
                     ) {
                         // check to see if we are creating the user
@@ -245,7 +245,7 @@ class Auth extends BaseController
                     $data = [
                         'nama_user' => $this->request->getPost('nama_user'),
                         'phone' => $this->request->getPost('phone'),
-                        'skpd_id' => $this->request->getPost('skpd_id'),
+                        // 'skpd_id' => $this->request->getPost('skpd_id'),
                         'img' => $this->request->getFile('img'),
                         'email' => $email,
                     ];
