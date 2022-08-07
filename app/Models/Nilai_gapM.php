@@ -69,6 +69,51 @@ class Nilai_gapM extends Model
         }
         return $this->get()->getNumRows();
     }
+
+
+    private function _get_datatables_bobot()
+    {
+        $column_search = array('id_aspek', 'id_kriteria', 'id_pemain', 'id_manager', 'nilai_kriteria');
+        $i = 0;
+        foreach ($column_search as $item) { // loop column 
+            if ($_GET['search']) {
+                if ($i === 0) {
+                    $this->groupStart();
+                    $this->like($item, $_GET['search']);
+                } else {
+                    $this->orLike($item, $_GET['search']);
+                }
+                if (count($column_search) - 1 == $i)
+                    $this->groupEnd();
+            }
+            $i++;
+        }
+        if (isset($_GET['order'])) {
+            $this->orderBy($_GET['sort'], $_GET['order']);
+        } else {
+            $this->orderBy('id', 'asc');
+        }
+        $this->orderBy('nama', 'asc');
+        $this->join('aspek a', 'a.id = nilai_gap.id_aspek');
+        $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
+        $this->join('pemain p', 'p.id = nilai_gap.id_pemain');
+        $this->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria');
+    }
+    public function get_datatables_bobot()
+    {
+        $this->_get_datatables_bobot();
+        $limit = isset($_GET['limit']) ? $_GET['limit'] : 0;
+        $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+        return $this->findAll($limit, $offset);
+    }
+    public function total_bobot()
+    {
+        $this->_get_datatables_bobot();
+        if ($this->tempUseSoftDeletes) {
+            $this->where($this->table . '.' . $this->deletedField, null);
+        }
+        return $this->get()->getNumRows();
+    }
 }
 /* End of file Nilai_gapM.php */
 /* Location: ./app/models/Nilai_gapM.php */

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AspekM;
+use App\Models\Hitung_cf_sf_nt;
 use App\Models\KriteriaM;
 use App\Models\Nilai_gapM;
 use App\Models\PemainM;
@@ -17,11 +18,27 @@ class Nilai_gap extends BaseController
         $this->aspekm = new AspekM();
         $this->kriteriam = new KriteriaM();
         $this->pemainm = new PemainM();
+        $this->hitungCfSfM = new Hitung_cf_sf_nt(); 
     }
     public function index()
     {
-        $this->data = array('title' => 'GAP Seslisih | Admin', 'breadcome' => 'Nilai gap', 'url' => 'nilai_gap/', 'm_nilai_gap' => 'active', 'session' => $this->session, 'aspek' => $this->aspekm->findAll());
-
+        // $hasil2 = [];
+        // foreach ($this->pemainm->findAll() as $row) {
+        //     $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+        //     $coreCoutn = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+        //     $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+        //     $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+        //     array_push($hasil2, [
+        //         'id_pemain' => $row->id,
+        //         'aspek'     => 4,
+        //         'core'      => $core[0]->totalcore / count($coreCoutn),
+        //         'second'    => $second[0]->totalsecond / count($secondCount),
+        //         'total'     => (($core[0]->core / 100) * ($core[0]->totalcore / count($coreCoutn))) + (($core[0]->secondary / 100) * ($second[0]->totalsecond) / count($secondCount))
+        //     ]);
+        // }
+        // dd($hasil2);
+        // die;
+        $this->data = array('title' => 'GAP Seslisih | Admin', 'breadcome' => 'Nilai gap', 'url' => 'nilai_gap/', 'm_nilai_gap' => 'active', 'session' => $this->session, 'aspek' => $this->aspekm->select('aspek.*')->join('nilai_gap n', 'n.id_aspek = aspek.id', 'left')->groupBy('aspek_penilaian')->where('id_aspek', null)->findAll());
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
     }
 
@@ -43,6 +60,29 @@ class Nilai_gap extends BaseController
         }
         $output = array(
             "total" => $this->nilai_gapm->total(),
+            "totalNotFiltered" => $this->nilai_gapm->countAllResults(),
+            "rows" => $data,
+        );
+        echo json_encode($output);
+    }
+    public function ajax_bobot()
+    {
+        $list = $this->nilai_gapm->get_datatables_bobot();
+        $data = array();
+        $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
+        foreach ($list as $rows) {
+            $row = array();
+            $row['id'] = $rows->id;
+            $row['nomor'] = $no++;
+            $row['id_aspek'] = $rows->aspek_penilaian;
+            $row['id_kriteria'] = $rows->kriteria_penilaian;
+            $row['id_pemain'] = $rows->nama;
+            $row['nilai_kriteria'] = $rows->nilai_kriteria;
+            $row['nilai_bobot'] = $rows->bobot_nilai;
+            $data[] = $row;
+        }
+        $output = array(
+            "total" => $this->nilai_gapm->total_bobot(),
             "totalNotFiltered" => $this->nilai_gapm->countAllResults(),
             "rows" => $data,
         );
@@ -156,29 +196,45 @@ class Nilai_gap extends BaseController
         $pemain = $this->pemainm->findAll();
         $data = $this->request->getVar('data');
         $id_aspek = $this->request->getVar('id_aspek');
-        $kriteria = $this->kriteriam->where('id_aspek', $id_aspek)->findAll();
         $exp = explode('&', $data);
         $nilai = count($exp) / count($pemain); // 3
-        $nilai2 = count($exp) / count($kriteria); // 12
         $hasil = [];
+        $hasil2 = [];
         foreach ($exp as $key => $row) {
             $key++;
             $row = explode('=', $row);
             $val[] = end($row);
 
+            $valKriteria = explode('%7C', end($row));
+
             array_push($hasil, [
                 'id_aspek' => $id_aspek,
-                'id_kriteria' => $kriteria[ceil($key / $nilai2) - 1]->id,
+                'id_kriteria' => end($valKriteria),
                 'id_pemain' => $pemain[ceil($key / $nilai) - 1]->id,
                 'id_manager' => session('user_id'),
-                'nilai_kriteria' => end($row)
+                'nilai_kriteria' => $valKriteria[0]
             ]);
         }
-
+        
         if ($this->nilai_gapm->insertBatch($hasil)) {
-            $status['title'] = 'success';
-            $status['type'] = 'success';
-            $status['text'] = '<strong>Done..!</strong>Berhasil ditambahkan';
+            foreach ($this->pemainm->findAll() as $row) {
+                $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+                $coreCoutn = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+                $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+                $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+                array_push($hasil2, [
+                    'id_pemain' => $row->id,
+                    'aspek'     => $id_aspek,
+                    'core'      => $core[0]->totalcore / count($coreCoutn),
+                    'second'    => $second[0]->totalsecond / count($secondCount),
+                    'total'     => (($core[0]->core / 100) * ($core[0]->totalcore / count($coreCoutn))) + (($core[0]->secondary / 100) * ($second[0]->totalsecond) / count($secondCount))
+                ]);
+            }
+            if ($this->hitungCfSfM->insertBatch($hasil2)) {
+                $status['title'] = 'success';
+                $status['type'] = 'success';
+                $status['text'] = '<strong>Done..!</strong>Berhasil ditambahkan';
+            }
         } else {
             $status['title'] = 'gagal';
             $status['type'] = 'error';
@@ -187,9 +243,3 @@ class Nilai_gap extends BaseController
         return json_encode($status);
     }
 }
-
-/* End of file Nilai_gap.php */
-/* Location: ./app/controllers/Nilai_gap.php */
-/* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2022-07-31 10:19:59 */
-/* http://harviacode.com */

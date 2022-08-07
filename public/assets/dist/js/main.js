@@ -32,6 +32,11 @@ function ajaxRequest(params) {
         params.success(JSON.parse(res))
     })
 }
+function ajaxNilaiBobot(params) {
+    $.get(url + 'ajax_bobot?' + $.param(params.data)).then(function (res) {
+        params.success(JSON.parse(res))
+    })
+}
 
 function cetak_dh(url) {
     var url = url + '/' + $('#pegawai').val() + '/' + $('#bulan').val();

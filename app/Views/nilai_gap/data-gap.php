@@ -15,16 +15,16 @@
                 <tr>
                     <th scope="row"><?= $no++ ?></th>
                     <td><?= ucwords($row->nama) ?></td>
-                    <?php for ($i = 1; $i <= count($kriteria); $i++) : ?>
+                    <?php foreach ($kriteria as $key => $row) : ?>
                         <td>
-                            <select class="custom-select nilai" name="<?= "nilai$i" ?>">
-                                <option value="1">Buruk</option>
-                                <option value="2">Cukup</option>
-                                <option value="3">Baik</option>
-                                <option value="4">Sangat Baik</option>
+                            <select class="custom-select nilai" name="<?= "nilai$key" ?>">
+                                <option value="<?= "1|$row->id" ?>">Buruk</option>
+                                <option value="<?= "2|$row->id" ?>">Cukup</option>
+                                <option value="<?= "3|$row->id" ?>">Baik</option>
+                                <option value="<?= "4|$row->id" ?>">Sangat Baik</option>
                             </select>
                         </td>
-                    <?php endfor ?>
+                    <?php endforeach ?>
                 </tr>
             <?php endforeach ?>
         </tbody>

@@ -62,6 +62,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= site_url('/nilai_bobot'); ?>" class="nav-link <?= isset($m_nilai_bobot) ? $m_nilai_bobot : ''; ?>">
+                        <i class="nav-icon fa fa-adjust"></i>
+                        <p>
+                            Nilai Bobot
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= site_url('/nilai_gap'); ?>" class="nav-link <?= isset($m_nilai_gap) ? $m_nilai_gap : ''; ?>">
                         <i class="nav-icon fa fa-adjust"></i>
                         <p>
