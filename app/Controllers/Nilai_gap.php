@@ -22,23 +22,7 @@ class Nilai_gap extends BaseController
     }
     public function index()
     {
-        // $hasil2 = [];
-        // foreach ($this->pemainm->findAll() as $row) {
-        //     $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
-        //     $coreCoutn = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
-        //     $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
-        //     $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', 4)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
-        //     array_push($hasil2, [
-        //         'id_pemain' => $row->id,
-        //         'aspek'     => 4,
-        //         'core'      => $core[0]->totalcore / count($coreCoutn),
-        //         'second'    => $second[0]->totalsecond / count($secondCount),
-        //         'total'     => (($core[0]->core / 100) * ($core[0]->totalcore / count($coreCoutn))) + (($core[0]->secondary / 100) * ($second[0]->totalsecond) / count($secondCount))
-        //     ]);
-        // }
-        // dd($hasil2);
-        // die;
-        $this->data = array('title' => 'GAP Seslisih | Admin', 'breadcome' => 'Nilai gap', 'url' => 'nilai_gap/', 'm_nilai_gap' => 'active', 'session' => $this->session, 'aspek' => $this->aspekm->select('aspek.*')->join('nilai_gap n', 'n.id_aspek = aspek.id', 'left')->groupBy('aspek_penilaian')->where('id_aspek', null)->findAll());
+        $this->data = array('title' => 'GAP Seslisih | Admin', 'breadcome' => 'Nilai gap', 'url' => 'nilai_gap/', 'm_nilai_gap' => 'active', 'session' => $this->session, 'aspek' => $this->aspekm->select('aspek.*')->join('nilai_gap n', 'n.id_aspek = aspek.id', 'left')->groupBy('aspek_penilaian')->where('id_aspek', null)->findAll(), 'nilaiCfSf'=>$this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll());
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
     }
 
@@ -71,19 +55,76 @@ class Nilai_gap extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $rows) {
+            switch($rows->nilai_kriteria) {
+                case 1:
+                    $nilai = 'Buruk';
+                    break;
+                case 2:
+                    $nilai = 'Cukup';
+                    break;
+                case 3:
+                    $nilai = 'Baik';
+                    break;
+                case 4:
+                    $nilai = 'Sangat Baik';
+                    break;
+            }
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['id_aspek'] = $rows->aspek_penilaian;
             $row['id_kriteria'] = $rows->kriteria_penilaian;
             $row['id_pemain'] = $rows->nama;
-            $row['nilai_kriteria'] = $rows->nilai_kriteria;
+            $row['nilai_kriteria'] = $nilai;
             $row['nilai_bobot'] = $rows->bobot_nilai;
             $data[] = $row;
         }
         $output = array(
             "total" => $this->nilai_gapm->total_bobot(),
             "totalNotFiltered" => $this->nilai_gapm->countAllResults(),
+            "rows" => $data,
+        );
+        echo json_encode($output);
+    }
+    public function ajax_nilaiCfSf()
+    {
+        $list = $this->hitungCfSfM->get_datatables();
+        $data = array();
+        $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
+        foreach ($list as $rows) {
+            $row = array();
+            $row['id'] = $rows->id;
+            $row['nomor'] = $no++;
+            $row['id_pemain'] = $rows->nama;
+            $row['aspek'] = $rows->aspek_penilaian;
+            $row['core'] = $rows->core;
+            $row['second'] = $rows->second;
+            $row['total'] = $rows->total;
+            $data[] = $row;
+        }
+        $output = array(
+            "total" => $this->hitungCfSfM->total(),
+            "totalNotFiltered" => $this->hitungCfSfM->countAllResults(),
+            "rows" => $data,
+        );
+        echo json_encode($output);
+    }
+    public function ajax_hasil_akhir()
+    {
+        $list = $this->hitungCfSfM->get_datatables_hasil();
+        $data = array();
+        $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
+        foreach ($list as $rows) {
+            $row = array();
+            $row['id'] = $rows->id;
+            $row['nomor'] = $no++;
+            $row['id_pemain'] = $rows->nama;
+            $row['hasil'] = $rows->hasil;
+            $data[] = $row;
+        }
+        $output = array(
+            "total" => $this->hitungCfSfM->total_hasil(),
+            "totalNotFiltered" => $this->hitungCfSfM->countAllResults(),
             "rows" => $data,
         );
         echo json_encode($output);

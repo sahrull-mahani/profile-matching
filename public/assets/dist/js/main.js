@@ -37,6 +37,16 @@ function ajaxNilaiBobot(params) {
         params.success(JSON.parse(res))
     })
 }
+function ajaxNilaiCfSF(params) {
+    $.get(url + 'ajax_nilaiCfSf?' + $.param(params.data)).then(function (res) {
+        params.success(JSON.parse(res))
+    })
+}
+function ajaxNilaiAkhir(params) {
+    $.get(url + 'ajax_hasil_akhir?' + $.param(params.data)).then(function (res) {
+        params.success(JSON.parse(res))
+    })
+}
 
 function cetak_dh(url) {
     var url = url + '/' + $('#pegawai').val() + '/' + $('#bulan').val();

@@ -25,74 +25,74 @@
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
 
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3><?= count($berita); ?><sup style="font-size: 20px"></sup></h3>
-                            <p>Berita</p>
+                            <h3><?= count($pemain); ?><sup style="font-size: 20px"></sup></h3>
+                            <p>Pemain</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-list-alt"></i>
+                            <i class="fa fa-user"></i>
                         </div>
-                        <a href="<?= site_url('berita'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<?= site_url('pemain'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
 
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3><?= count($photo); ?><sup style="font-size: 20px"></sup></h3>
-                            <p>Photo</p>
+                            <h3><?= count($tim); ?><sup style="font-size: 20px"></sup></h3>
+                            <p>Tim</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-file-image"></i>
+                            <i class="fa fa-users"></i>
                         </div>
-                        <a href="<?= site_url('photo') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<?= site_url('tim') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
 
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3><?= count($video); ?></h3>
-                            <p>Video</p>
+                            <h3><?= count($aspek); ?></h3>
+                            <p>Aspek</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-file-video"></i>
+                            <i class="fas fa-asterisk"></i>
                         </div>
-                        <a href="<?= site_url('video'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="<?= site_url('aspek'); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-
-                <section class="col-lg-12 connectedSortable">
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-chart-bar mr-1"></i>
-                                Statistik Stunting
-                            </h3>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3><?= count($kriteria) ?></h3>
+                            <p>Kriteria</p>
                         </div>
-                        <div class="card-body">
-                            <div class="tab-content p-0">
-                                <?php if (empty($statistik)) : ?>
-                                    <?php if (in_groups('operator-stunting')) : ?>
-                                        <h3 class="text-center">Masukan Data <a href="<?= site_url('stunting'); ?>">Stunting</a></h3>
-                                    <?php endif ?>
-                                <?php endif ?>
-
-                                <canvas id="myChart" class="<?= empty($statistik) ? 'd-none' : '' ?>"></canvas>
-                            </div>
+                        <div class="icon">
+                            <i class="fa fa-hashtag"></i>
                         </div>
+                        <a href="<?= site_url('kriteria') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
+                </div>
 
-                </section>
+            </div>
 
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tentang Profile Matching</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+
+                <div class="card-body text-justify">
+                    Profile Matching adalah sebuah mekanisme pengambilan keputusan dengan mengasumsikan bahwa terdapat tingkat variabel prediktor yang ideal yang harus dipenuhi oleh subyek yang diteliti, bukannya tingkat minimal yang harus dipenuhi atau dilewati. Contoh penerapnnya, seperti: evaluasi kinerja karyawan, penerimaan beasiswa, dan lainnya sebagainya. Dalam proses Profile Matching secara garis besar merupakan proses membandingkan antara nilai data aktual dari suatu profile yang akan dinilai dengan nilai profil yang diharapkan, sehingga dapat diketahui perbedaan kompetensinya (disebut juga GAP), semakin kecil GAP yang dihasilkan maka bobot nilainya semakin besar.
+                </div>
             </div>
 
         </div>

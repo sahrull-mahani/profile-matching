@@ -2,32 +2,30 @@
 
 namespace App\Controllers;
 
-use App\Models\BeritaM;
-use App\Models\PhotoM;
-use App\Models\VideoM;
-use App\Models\StatistikM;
+use App\Models\AspekM;
+use App\Models\KriteriaM;
+use App\Models\PemainM;
+use App\Models\TimM;
 
 class Home extends BaseController
 {
 
     function __construct()
     {
-        $this->beritam = new BeritaM();
-        $this->videom = new VideoM();
-        $this->photom = new PhotoM();
-        $this->statistikm = new StatistikM();
-        $this->db = db_connect();
+        $this->pemainm = new PemainM();
+        $this->timm = new TimM();
+        $this->aspekm = new AspekM();
+        $this->kriteriam = new KriteriaM();
     }
 
     public function index()
     {
         $data = [
             'title' => 'Dashboard | Profile Matching',
-            'statistikJS' => true,
-            'berita' => $this->beritam->findAll(),
-            'photo' => $this->photom->findAll(),
-            'video' => $this->videom->findAll(),
-            'statistik' => $this->statistikm->findAll(),
+            'pemain' => $this->pemainm->findAll(),
+            'tim' => $this->timm->findAll(),
+            'aspek' => $this->aspekm->findAll(),
+            'kriteria' => $this->kriteriam->findAll(),
         ];
 
         return view('App\Views\template_adminlte\home', $data);
