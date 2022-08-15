@@ -46,18 +46,11 @@
                                         <th data-field="state" data-checkbox="true"></th>
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
-                                        <th data-field="nama">Nama</th>
-                                        <th data-field="thn_didirikan">Thn Didirikan</th>
-                                        <th data-field="no_telp">No Telp</th>
-                                        <th data-field="alamat">Alamat</th>
-                                        <th data-field="pelatih">Pelatih</th>
-                                        <th data-field="manager">Manager</th>
-                                        <th data-field="formasi">Formasi</th>
+                                        <th data-field="nama_posisi">Nama Posisi</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
-                        <div class="card-footer">Footer</div>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PemainM;
+use App\Models\PosisiM;
 
 class Pemain extends BaseController
 {
@@ -10,6 +11,7 @@ class Pemain extends BaseController
     function __construct()
     {
         $this->pemainm = new PemainM();
+        $this->posisim = new PosisiM();
     }
     public function index()
     {
@@ -28,10 +30,11 @@ class Pemain extends BaseController
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['nama'] = ucwords($rows->nama);
+            $row['posisi'] = ucwords($rows->nama_posisi);
             $row['ttl'] = get_format_date($rows->ttl);
             $row['no_hp'] = $rows->no_hp;
             $row['alamat'] = $rows->alamat;
-            $row['foto'] = '<img width="150" alt="Foto pemain" src="' . site_url("Berita/img_thumb/" . $rows->foto) . '" class="mb-3 img-responsive" />';
+            $row['foto'] = '<img width="150" alt="Foto pemain" src="' . site_url("Pemain/img_thumb/" . $rows->foto) . '" class="mb-3 img-responsive" />';
             $data[] = $row;
         }
         $output = array(
@@ -47,6 +50,7 @@ class Pemain extends BaseController
         $num_of_row = $this->request->getPost('num_of_row');
         for ($x = 1; $x <= $num_of_row; $x++) {
             $data['nama'] = 'Data ' . $x;
+            $data['posisi'] = $this->posisim->findAll();
             $this->data['form_input'][] = view('App\Views\pemain\form_input', $data);
         }
         $status['html']         = view('App\Views\pemain\form_modal', $this->data);
@@ -63,6 +67,7 @@ class Pemain extends BaseController
             $data = array(
                 'nama' => '<b>' . $get->nama . '</b>',
                 'get' => $get,
+                'posisi' => $this->posisim->findAll()
             );
             $this->data['form_input'][] = view('App\Views\pemain\form_input', $data);
         }
@@ -83,6 +88,7 @@ class Pemain extends BaseController
                     if ($this->upload_img($file_name, $files)) {
                         array_push($data, array(
                             'nama' => $this->request->getPost('nama')[$key],
+                            'id_posisi' => $this->request->getPost('posisi')[$key],
                             'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
                             'no_hp' => $this->request->getPost('no_hp')[$key],
                             'alamat' => $this->request->getPost('alamat')[$key],
@@ -120,6 +126,7 @@ class Pemain extends BaseController
                                 'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
                                 'no_hp' => $this->request->getPost('no_hp')[$key],
                                 'alamat' => $this->request->getPost('alamat')[$key],
+                                'id_posisi' => $this->request->getPost('posisi')[$key],
                                 'foto' => $file_name,
                             ));
                             unlink(WRITEPATH . 'uploads/img/' . $filesold);
@@ -201,6 +208,24 @@ class Pemain extends BaseController
             $this->session->setFlashdata('error', $img->getErrorString() . '(' . $img->getError() . ')');
             return false;
         }
+    }
+    public function img_thumb($file_name)
+    {
+        $filepath = WRITEPATH . 'uploads/thumbs/' . $file_name;
+        $this->response->setContentType('image/jpg,image/jpeg,image/png');
+        header('Content-Disposition: inline; filename=' . $file_name);
+        header('Content-Transfer-Encoding: binary');
+        header('Accept-Ranges: bytes');
+        readfile($filepath);
+    }
+    public function img_medium($file_name)
+    {
+        $filepath = WRITEPATH . 'uploads/img/' . $file_name;
+        $this->response->setContentType('image/jpg,image/jpeg,image/png');
+        header('Content-Disposition: inline; filename=' . $file_name);
+        header('Content-Transfer-Encoding: binary');
+        header('Accept-Ranges: bytes');
+        readfile($filepath);
     }
 }
 

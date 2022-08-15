@@ -8,6 +8,17 @@
     </div>
 </div>
 <div class="form-group row mode2">
+    <label for="posisi" class="col-sm-3 col-form-label">Posisi</label>
+    <div class="col-sm-9 item">
+        <select class="custom-select" id="posisi" name="posisi[]">
+            <option selected disabled>Pilih posisi...</option>
+            <?php foreach ($posisi as $row) : ?>
+                <option value="<?= $row->id ?>" <?= (isset($get->id)) ? ($get->id == $row->id_posisi ? 'selected' : '') : ''; ?>><?= $row->nama_posisi ?></option>
+            <?php endforeach ?>
+        </select>
+    </div>
+</div>
+<div class="form-group row mode2">
     <label for="ttl" class="col-sm-3 col-form-label">Tanggal Lahir</label>
     <div class="col-sm-9 item">
         <input type="date" class="form-control datepicker" id="ttl" name="ttl[]" value="<?= (isset($get->ttl)) ? date('Y-m-d', strtotime($get->ttl)) : '' ?>" placeholder="Ttl" required />

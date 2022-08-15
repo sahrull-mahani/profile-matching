@@ -16,13 +16,13 @@
 <div class="form-group row mode2">
     <label for="core" class="col-sm-3 col-form-label">Core</label>
     <div class="col-sm-9 item">
-        <input type="text" class="form-control" id="core" name="core[]" value="<?= (isset($get->core)) ? $get->core : ''; ?>" placeholder="Core" required />
+        <input type="number" class="form-control" min="0" max="100" maxlength="3" id="core" name="core[]" value="<?= (isset($get->core)) ? $get->core : ''; ?>" placeholder="Core %" required />
     </div>
 </div>
 <div class="form-group row mode2">
     <label for="secondary" class="col-sm-3 col-form-label">Secondary</label>
     <div class="col-sm-9 item">
-        <input type="text" class="form-control" id="secondary" name="secondary[]" value="<?= (isset($get->secondary)) ? $get->secondary : ''; ?>" placeholder="Secondary" required />
+        <input type="number" class="form-control" min="0" max="100" maxlength="3" id="secondary" name="secondary[]" value="<?= (isset($get->secondary)) ? $get->secondary : ''; ?>" placeholder="Secondary %" required />
     </div>
 </div>
 <input type="hidden" name="id[]" value="<?= (isset($get->id)) ? $get->id : ''; ?>" />

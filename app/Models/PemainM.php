@@ -2,7 +2,7 @@
 use CodeIgniter\Model;
 class PemainM extends Model{ 
     protected $table = 'pemain';
-    protected $allowedFields = array('nama','ttl','no_hp','alamat','foto');
+    protected $allowedFields = array('nama', 'id_posisi','ttl','no_hp','alamat','foto');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -12,12 +12,14 @@ class PemainM extends Model{
     protected $deletedField  = 'deleted_at';
 
     protected $validationRules = ['nama' => 'required|max_length[150]',
+		'id_posisi' => 'required|max_length[11]',
 		'no_hp' => 'required|max_length[15]',
 		'alamat' => 'required|max_length[65535]',
 		'foto' => 'required|max_length[150]',
 			];
 
     protected $validationMessages = ['nama' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
+		'id_posisi' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 11 Karakter'],
 		'no_hp' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 15 Karakter'],
 		'alamat' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 65535 Karakter'],
 		'foto' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
@@ -43,6 +45,7 @@ class PemainM extends Model{
         }else{
             $this->orderBy('id', 'asc');
         }
+        $this->join('posisi p', 'p.id = pemain.id_posisi');
     }
     public function get_datatables(){
         $this->_get_datatables();

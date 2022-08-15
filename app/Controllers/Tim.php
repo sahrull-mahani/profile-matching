@@ -35,6 +35,7 @@ class Tim extends BaseController
             $row['alamat'] = $rows->alamat;
             $row['pelatih'] = $rows->nama_pelatih;
             $row['manager'] = $rows->nama_manager;
+            $row['formasi'] = $rows->formasi;
             $data[] = $row;
         }
         $output = array(
@@ -92,6 +93,7 @@ class Tim extends BaseController
                         'alamat' => $this->request->getPost('alamat')[$key],
                         'pelatih' => $this->request->getPost('pelatih')[$key],
                         'manager' => $this->request->getPost('manager')[$key],
+                        'formasi' => $this->request->getPost('formasi')[$key],
                     ));
                 }
                 if ($this->timm->insertBatch($data)) {
@@ -115,6 +117,7 @@ class Tim extends BaseController
                         'alamat' => $this->request->getPost('alamat')[$key],
                         'pelatih' => $this->request->getPost('pelatih')[$key],
                         'manager' => $this->request->getPost('manager')[$key],
+                        'formasi' => $this->request->getPost('formasi')[$key],
                     ));
                 }
                 if ($this->timm->updateBatch($data, 'id')) {

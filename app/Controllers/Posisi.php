@@ -2,40 +2,37 @@
 
 namespace App\Controllers;
 
-use App\Models\AspekM;
+use App\Models\PosisiM;
 
-class Aspek extends BaseController
+class Posisi extends BaseController
 {
-    protected $aspekm;
+    protected $posisim;
     function __construct()
     {
-        $this->aspekm = new AspekM();
+        $this->posisim = new PosisiM();
     }
     public function index()
     {
-        $this->data = array('title' => 'Aspek | Admin', 'breadcome' => 'Aspek', 'url' => 'aspek/', 'm_aspek' => 'active', 'session' => $this->session);
+        $this->data = array('title' => 'Posisi | Admin', 'breadcome' => 'Posisi', 'url' => 'posisi/', 'm_posisi' => 'active', 'session' => $this->session);
 
-        echo view('App\Views\aspek\aspek_list', $this->data);
+        echo view('App\Views\posisi\posisi_list', $this->data);
     }
 
     public function ajax_request()
     {
-        $list = $this->aspekm->get_datatables();
+        $list = $this->posisim->get_datatables();
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $rows) {
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
-            $row['aspek_penilaian'] = $rows->aspek_penilaian;
-            $row['persentase'] = "$rows->persentase%";
-            $row['core'] = "$rows->core%";
-            $row['secondary'] = "$rows->secondary%";
+            $row['nama_posisi'] = $rows->nama_posisi;
             $data[] = $row;
         }
         $output = array(
-            "total" => $this->aspekm->total(),
-            "totalNotFiltered" => $this->aspekm->countAllResults(),
+            "total" => $this->posisim->total(),
+            "totalNotFiltered" => $this->posisim->countAllResults(),
             "rows" => $data,
         );
         echo json_encode($output);
@@ -46,10 +43,10 @@ class Aspek extends BaseController
         $num_of_row = $this->request->getPost('num_of_row');
         for ($x = 1; $x <= $num_of_row; $x++) {
             $data['nama'] = 'Data ' . $x;
-            $this->data['form_input'][] = view('App\Views\aspek\form_input', $data);
+            $this->data['form_input'][] = view('App\Views\posisi\form_input', $data);
         }
-        $status['html']         = view('App\Views\aspek\form_modal', $this->data);
-        $status['modal_title']  = 'Tambah Data Aspek';
+        $status['html']         = view('App\Views\posisi\form_modal', $this->data);
+        $status['modal_title']  = 'Tambah Data Posisi';
         $status['modal_size']   = 'modal-lg';
         echo json_encode($status);
     }
@@ -58,15 +55,15 @@ class Aspek extends BaseController
         $id = $this->request->getPost('id');
         $this->data = array('action' => 'update', 'btn' => '<i class="fas fa-edit"></i> Edit');
         foreach ($id as $ids) {
-            $get = $this->aspekm->find($ids);
+            $get = $this->posisim->find($ids);
             $data = array(
-                'nama' => '<b>' . $get->aspek_penilaian . '</b>',
+                'nama' => '<b>' . $get->nama_posisi . '</b>',
                 'get' => $get,
             );
-            $this->data['form_input'][] = view('App\Views\aspek\form_input', $data);
+            $this->data['form_input'][] = view('App\Views\posisi\form_input', $data);
         }
-        $status['html']         = view('App\Views\aspek\form_modal', $this->data);
-        $status['modal_title']  = 'Update Data Aspek';
+        $status['html']         = view('App\Views\posisi\form_modal', $this->data);
+        $status['modal_title']  = 'Update Data Posisi';
         $status['modal_size']   = 'modal-lg';
         echo json_encode($status);
     }
@@ -78,18 +75,15 @@ class Aspek extends BaseController
                 $data = array();
                 foreach ($nama as $key => $val) {
                     array_push($data, array(
-                        'aspek_penilaian' => $this->request->getPost('aspek_penilaian')[$key],
-                        'persentase' => $this->request->getPost('persentase')[$key],
-                        'core' => $this->request->getPost('core')[$key],
-                        'secondary' => $this->request->getPost('secondary')[$key],
+                        'nama_posisi' => $this->request->getPost('nama_posisi')[$key],
                     ));
                 }
-                if ($this->aspekm->insertBatch($data)) {
+                if ($this->posisim->insertBatch($data)) {
                     $status['type'] = 'success';
-                    $status['text'] = 'Data Aspek Tersimpan';
+                    $status['text'] = 'Data Posisi Tersimpan';
                 } else {
                     $status['type'] = 'error';
-                    $status['text'] = $this->aspekm->errors();
+                    $status['text'] = $this->posisim->errors();
                 }
                 echo json_encode($status);
                 break;
@@ -99,23 +93,20 @@ class Aspek extends BaseController
                 foreach ($id as $key => $val) {
                     array_push($data, array(
                         'id' => $val,
-                        'aspek_penilaian' => $this->request->getPost('aspek_penilaian')[$key],
-                        'persentase' => $this->request->getPost('persentase')[$key],
-                        'core' => $this->request->getPost('core')[$key],
-                        'secondary' => $this->request->getPost('secondary')[$key],
+                        'nama_posisi' => $this->request->getPost('nama_posisi')[$key],
                     ));
                 }
-                if ($this->aspekm->updateBatch($data, 'id')) {
+                if ($this->posisim->updateBatch($data, 'id')) {
                     $status['type'] = 'success';
-                    $status['text'] = 'Data Aspek Telah Di Ubah';
+                    $status['text'] = 'Data Posisi Telah Di Ubah';
                 } else {
                     $status['type'] = 'error';
-                    $status['text'] = $this->aspekm->errors();
+                    $status['text'] = $this->posisim->errors();
                 }
                 echo json_encode($status);
                 break;
             case 'delete':
-                if ($this->aspekm->delete($this->request->getPost('id'))) {
+                if ($this->posisim->delete($this->request->getPost('id'))) {
                     $status['type'] = 'success';
                     $status['text'] = '<strong>Deleted..!</strong>Berhasil dihapus';
                 } else {

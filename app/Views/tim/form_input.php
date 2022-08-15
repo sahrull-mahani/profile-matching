@@ -26,6 +26,12 @@
     </div>
 </div>
 <div class="form-group row mode2">
+    <label for="formasi" class="col-sm-3 col-form-label">Formasi</label>
+    <div class="col-sm-9 item">
+        <input type="text" class="form-control" id="formasi" name="formasi[]" value="<?= (isset($get->formasi)) ? $get->formasi : ''; ?>" placeholder="Formasi" required />
+    </div>
+</div>
+<div class="form-group row mode2">
     <label for="pelatih" class="col-sm-3 col-form-label">Pelatih</label>
     <div class="col-sm-9 item">
         <select class="custom-select" id="pelatih" name="pelatih[]">

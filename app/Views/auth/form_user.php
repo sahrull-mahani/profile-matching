@@ -41,9 +41,9 @@
                             break;
                         }
                     } ?>
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input custom-control-input-danger custom-control-input-outline" type="checkbox" name="groups[]" value="<?= $group->id; ?>" <?= $checked; ?> id="customCheckbox<?= $no; ?>" />
-                        <label for="customCheckbox<?= $no; ?>" class="custom-control-label"><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8'); ?></label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="groups[]" id="inlineRadio1<?= $no; ?>" value="<?= $group->id; ?>"  <?= $checked; ?>>
+                        <label class="form-check-label" for="inlineRadio1<?= $no; ?>"><?= htmlspecialchars($group->name, ENT_QUOTES, 'UTF-8'); ?></label>
                     </div>
                 <?php $no++;
                 endforeach ?>

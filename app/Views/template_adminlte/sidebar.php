@@ -31,18 +31,26 @@
                 </li>
                 <li class="nav-header">Data Individu</li>
                 <li class="nav-item">
-                    <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Pemain
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="<?= site_url('/tim'); ?>" class="nav-link <?= isset($m_tim) ? $m_tim : ''; ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Tim
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/posisi'); ?>" class="nav-link <?= isset($m_posisi) ? $m_posisi : ''; ?>">
+                        <i class="nav-icon fas fa-plus"></i>
+                        <p>
+                            Posisi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                            Pemain
                         </p>
                     </a>
                 </li>
@@ -77,6 +85,15 @@
                         <i class="nav-icon fa fa-adjust"></i>
                         <p>
                             Profile Matching
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">User</li>
+                <li class="nav-item">
+                    <a href="<?= site_url('/users'); ?>" class="nav-link <?= isset($m_users) ? $m_users : ''; ?>">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Users
                         </p>
                     </a>
                 </li>

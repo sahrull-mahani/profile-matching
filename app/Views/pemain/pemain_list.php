@@ -47,6 +47,7 @@
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
                                         <th data-field="nama">Nama</th>
+                                        <th data-field="posisi">Posisi</th>
                                         <th data-field="ttl">Tanggal Lahir</th>
                                         <th data-field="no_hp">No Handphone</th>
                                         <th data-field="alamat">Alamat</th>
