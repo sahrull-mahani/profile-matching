@@ -29,74 +29,82 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">Data Individu</li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/tim'); ?>" class="nav-link <?= isset($m_tim) ? $m_tim : ''; ?>">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Tim
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/posisi'); ?>" class="nav-link <?= isset($m_posisi) ? $m_posisi : ''; ?>">
-                        <i class="nav-icon fas fa-plus"></i>
-                        <p>
-                            Posisi
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Pemain
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-header">Data Master</li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/aspek'); ?>" class="nav-link <?= isset($m_aspek) ? $m_aspek : ''; ?>">
-                        <i class="nav-icon fas fa-asterisk"></i>
-                        <p>
-                            Aspek
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/kriteria'); ?>" class="nav-link <?= isset($m_kriteria) ? $m_kriteria : ''; ?>">
-                        <i class="nav-icon fas fa-hashtag"></i>
-                        <p>
-                            Kriteria
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/nilai_bobot'); ?>" class="nav-link <?= isset($m_nilai_bobot) ? $m_nilai_bobot : ''; ?>">
-                        <i class="nav-icon fa fa-adjust"></i>
-                        <p>
-                            Nilai Bobot
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-header">Hasil Akhir</li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/nilai_gap'); ?>" class="nav-link <?= isset($m_nilai_gap) ? $m_nilai_gap : ''; ?>">
-                        <i class="nav-icon fa fa-adjust"></i>
-                        <p>
-                            Profile Matching
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-header">User</li>
-                <li class="nav-item">
-                    <a href="<?= site_url('/users'); ?>" class="nav-link <?= isset($m_users) ? $m_users : ''; ?>">
-                        <i class="nav-icon fa fa-users"></i>
-                        <p>
-                            Users
-                        </p>
-                    </a>
-                </li>
+                <?php if (is_admin()) : ?>
+                    <li class="nav-header">Data Individu</li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/tim'); ?>" class="nav-link <?= isset($m_tim) ? $m_tim : ''; ?>">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Tim
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/posisi'); ?>" class="nav-link <?= isset($m_posisi) ? $m_posisi : ''; ?>">
+                            <i class="nav-icon fas fa-plus"></i>
+                            <p>
+                                Posisi
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+                <?php if (in_groups('manager')) : ?>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Pemain
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+                <?php if (in_groups('pelatih')) : ?>
+                    <li class="nav-header">Data Master</li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/aspek'); ?>" class="nav-link <?= isset($m_aspek) ? $m_aspek : ''; ?>">
+                            <i class="nav-icon fas fa-asterisk"></i>
+                            <p>
+                                Aspek
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/kriteria'); ?>" class="nav-link <?= isset($m_kriteria) ? $m_kriteria : ''; ?>">
+                            <i class="nav-icon fas fa-hashtag"></i>
+                            <p>
+                                Kriteria
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/nilai_bobot'); ?>" class="nav-link <?= isset($m_nilai_bobot) ? $m_nilai_bobot : ''; ?>">
+                            <i class="nav-icon fa fa-adjust"></i>
+                            <p>
+                                Nilai Bobot
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header">Hasil Akhir</li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/nilai_gap'); ?>" class="nav-link <?= isset($m_nilai_gap) ? $m_nilai_gap : ''; ?>">
+                            <i class="nav-icon fa fa-adjust"></i>
+                            <p>
+                                Profile Matching
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+                <?php if (is_admin()) : ?>
+                    <li class="nav-header">User</li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/users'); ?>" class="nav-link <?= isset($m_users) ? $m_users : ''; ?>">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>
+                                Users
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

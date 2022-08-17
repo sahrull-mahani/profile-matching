@@ -32,7 +32,7 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->get('/', 'Auth::index');
-// $routes->get('web/berita', 'Web::berita');
+// $routes->get('tim', 'Tim::index');
 // $routes->get('web/berita/detail_b/(:num)', 'Web::detail_b/$1');
 // $routes->get('img_thumbs/(:segment)', 'Berita::img_thumb/$1');
 // $routes->get('img_mediums/(:segment)', 'Berita::img_medium/$1');
@@ -42,12 +42,14 @@ $routes->setAutoRoute(true);
 // $routes->get('web/api', 'Web::api');
 // $routes->add('filemanager/(:any)', 'Filemanager::run');
 
-$routes->group('', ['filter' => 'role:users'], function ($routes) {
-    $routes->get('post-berita', 'Berita::post');
+$routes->group('', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('tim', 'Tim::index');
+    $routes->get('users', 'Auth::index');
 });
 
-$routes->group('', ['filter' => 'role:operator-stunting'], function ($routes) {
-    $routes->get('stunting', 'Statistik::index');
+$routes->group('', ['filter' => 'role:pelatih'], function ($routes) {
+    $routes->get('aspek', 'Aspek::index');
+    $routes->get('kriteria', 'Kriteria::index');
 });
 
 $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {

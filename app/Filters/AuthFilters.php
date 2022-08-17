@@ -33,13 +33,6 @@ class AuthFilters implements FilterInterface
             route_to('forgot_password'), 
             route_to('reset-password'), 
             route_to('activate-account'),
-            // route_to('/'),
-            // route_to('web/berita'),
-            // route_to('web/berita/detail'),
-            // route_to('web/galery'),
-            // route_to('web/video'),
-            // route_to('web/statistik'),
-            // route_to('web/api'),
             ])
         ) {
             return;
