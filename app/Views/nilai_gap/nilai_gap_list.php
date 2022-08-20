@@ -25,6 +25,14 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
+                                    <select id="posisi" class="custom-select custom-select-sm">
+                                        <option selected disabled>Pilih Posisi</option>
+                                        <?php foreach ($posisi as $row) : ?>
+                                            <option value="<?= $row->id ?>"><?= ucwords($row->nama_posisi) ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
                                     <select id="aspek" class="custom-select custom-select-sm">
                                         <option selected disabled>Pilih Aspek</option>
                                         <?php foreach ($aspek as $row) : ?>
@@ -107,6 +115,7 @@
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
                                         <th data-field="id_pemain">Pemain</th>
+                                        <th data-field="posisi">Posisi</th>
                                         <th data-field="hasil">Hasil Akhir</th>
                                     </tr>
                                 </thead>

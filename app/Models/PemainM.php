@@ -2,7 +2,7 @@
 use CodeIgniter\Model;
 class PemainM extends Model{ 
     protected $table = 'pemain';
-    protected $allowedFields = array('nama', 'id_posisi','ttl','no_hp','alamat','foto');
+    protected $allowedFields = array('nama', 'id_posisi', 'id_tim','ttl','no_hp','alamat','foto');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -12,14 +12,16 @@ class PemainM extends Model{
     protected $deletedField  = 'deleted_at';
 
     protected $validationRules = ['nama' => 'required|max_length[150]',
-		'id_posisi' => 'required|max_length[11]',
+		'id_posisi' => 'required|max_length[10]',
+		'id_tim' => 'required|max_length[10]',
 		'no_hp' => 'required|max_length[15]',
 		'alamat' => 'required|max_length[65535]',
 		'foto' => 'required|max_length[150]',
 			];
 
     protected $validationMessages = ['nama' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
-		'id_posisi' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 11 Karakter'],
+		'id_posisi' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 10 Karakter'],
+		'id_tim' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 10 Karakter'],
 		'no_hp' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 15 Karakter'],
 		'alamat' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 65535 Karakter'],
 		'foto' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
@@ -45,7 +47,12 @@ class PemainM extends Model{
         }else{
             $this->orderBy('id', 'asc');
         }
+        $this->select('pemain.*, p.nama_posisi, t.nama nama_tim');
+        if(!is_admin()) {
+            $this->where('t.id', getTimById('manager', session('user_id'))->id);
+        }
         $this->join('posisi p', 'p.id = pemain.id_posisi');
+        $this->join('tim t', 't.id = pemain.id_tim');
     }
     public function get_datatables(){
         $this->_get_datatables();

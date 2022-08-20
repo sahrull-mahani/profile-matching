@@ -48,7 +48,7 @@
                                         <th data-field="nomor">No</th>
                                         <th data-field="id_aspek">Aspek Penilaian</th>
                                         <th data-field="kriteria_penilaian">Kriteria Penilaian</th>
-                                        <th data-field="target">Target</th>
+                                        <!-- <th data-field="target">Target</th> -->
                                         <th data-field="type">Type</th>
                                     </tr>
                                 </thead>

@@ -168,3 +168,8 @@ function getTableLike(String $table, String $field, String $data) {
     $db = db_connect();
     return $db->table($table)->like($field, $data)->get();
 }
+
+function getTimById($jabatan, $id) {
+    $db = db_connect();
+    return $db->table('tim t')->select('t.*')->join('users u', "u.id = t.$jabatan")->where($jabatan, $id)->get()->getRow();
+}

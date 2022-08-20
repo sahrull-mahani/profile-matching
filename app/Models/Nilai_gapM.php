@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Nilai_gapM extends Model
 {
     protected $table = 'nilai_gap';
-    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_pemain', 'id_manager', 'nilai_kriteria');
+    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_pemain', 'id_pelatih', 'nilai_kriteria');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -20,7 +20,7 @@ class Nilai_gapM extends Model
         'id_aspek' => 'required|max_length[11]',
         'id_kriteria' => 'required|max_length[11]',
         'id_pemain' => 'required|max_length[11]',
-        'id_manager' => 'required|max_length[11]',
+        'id_pelatih' => 'required|max_length[6]',
         'nilai_kriteria' => 'required|max_length[3]',
     ];
 
@@ -28,7 +28,7 @@ class Nilai_gapM extends Model
         'id_aspek' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
         'id_kriteria' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
         'id_pemain' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
-        'id_manager' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
+        'id_pelatih' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 6 Karakter'],
         'nilai_kriteria' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 5 Karakter'],
     ];
     private function _get_datatables()
@@ -93,7 +93,10 @@ class Nilai_gapM extends Model
         } else {
             $this->orderBy('id', 'asc');
         }
-        $this->orderBy('nama', 'asc');
+        if (!is_admin()) {
+            $this->where('p.id_tim', getTimById('pelatih', session('user_id'))->id);
+        }
+        $this->orderBy('id_pemain', 'asc');
         $this->join('aspek a', 'a.id = nilai_gap.id_aspek');
         $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
         $this->join('pemain p', 'p.id = nilai_gap.id_pemain');

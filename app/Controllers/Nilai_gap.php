@@ -7,6 +7,7 @@ use App\Models\Hitung_cf_sf_nt;
 use App\Models\KriteriaM;
 use App\Models\Nilai_gapM;
 use App\Models\PemainM;
+use App\Models\PosisiM;
 use CodeIgniter\Debug\Toolbar\Collectors\Views;
 
 class Nilai_gap extends BaseController
@@ -14,15 +15,26 @@ class Nilai_gap extends BaseController
     protected $nilai_gapm;
     function __construct()
     {
+        helper('my_helper');
         $this->nilai_gapm = new Nilai_gapM();
         $this->aspekm = new AspekM();
         $this->kriteriam = new KriteriaM();
         $this->pemainm = new PemainM();
-        $this->hitungCfSfM = new Hitung_cf_sf_nt(); 
+        $this->hitungCfSfM = new Hitung_cf_sf_nt();
+        $this->posisim = new PosisiM();
     }
     public function index()
     {
-        $this->data = array('title' => 'GAP Seslisih | Admin', 'breadcome' => 'Nilai gap', 'url' => 'nilai_gap/', 'm_nilai_gap' => 'active', 'session' => $this->session, 'aspek' => $this->aspekm->select('aspek.*')->join('nilai_gap n', 'n.id_aspek = aspek.id', 'left')->groupBy('aspek_penilaian')->where('id_aspek', null)->findAll(), 'nilaiCfSf'=>$this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll());
+        $this->data = array(
+            'title' => 'Profile Matching | Admin',
+            'breadcome' => 'Profile Matching',
+            'url' => 'nilai_gap/',
+            'm_nilai_gap' => 'active',
+            'session' => $this->session,
+            'posisi' => $this->posisim->select('posisi.*, h.posisi')->join('hitung_cf_sf_nt h', 'h.posisi = posisi.id', 'left')->groupBy('posisi.id')->where('posisi', null)->findALl(),
+            'aspek' => $this->aspekm->findAll(),
+            'nilaiCfSf'=>$this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
+        );
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
     }
 
@@ -38,7 +50,7 @@ class Nilai_gap extends BaseController
             $row['id_aspek'] = $rows->id_aspek;
             $row['id_kriteria'] = $rows->id_kriteria;
             $row['id_pemain'] = $rows->id_pemain;
-            $row['id_manager'] = $rows->id_manager;
+            $row['id_pelatih'] = $rows->id_pelatih;
             $row['nilai_kriteria'] = $rows->nilai_kriteria;
             $data[] = $row;
         }
@@ -99,7 +111,7 @@ class Nilai_gap extends BaseController
             $row['aspek'] = $rows->aspek_penilaian;
             $row['core'] = $rows->core;
             $row['second'] = $rows->second;
-            $row['total'] = $rows->total;
+            $row['total'] = substr($rows->total, 0, 4);
             $data[] = $row;
         }
         $output = array(
@@ -119,7 +131,8 @@ class Nilai_gap extends BaseController
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['id_pemain'] = $rows->nama;
-            $row['hasil'] = $rows->hasil;
+            $row['posisi'] = $rows->nama_posisi;
+            $row['hasil'] = substr($rows->hasil, 0, 4);
             $data[] = $row;
         }
         $output = array(
@@ -221,12 +234,14 @@ class Nilai_gap extends BaseController
     public function dataGap()
     {
         $aspek = $this->request->getVar('value');
+        $posisi = $this->request->getVar('posisi');
         $kriteria = $this->kriteriam->where('id_aspek', $aspek)->findAll();
-        $pemain = $this->pemainm->findAll();
+        $pemain = $this->pemainm->where('id_tim', getTimById('pelatih', session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
         $data = [
             'kriteria'  => $kriteria,
             'pemain'    => $pemain,
-            'aspek'     => $aspek
+            'aspek'     => $aspek,
+            'posisi'    => $posisi
         ];
         $html = view('App\Views\nilai_gap\data-gap', $data);
         return json_encode(['nilai' => $html]);
@@ -234,11 +249,11 @@ class Nilai_gap extends BaseController
 
     public function simpanGap()
     {
-        $pemain = $this->pemainm->findAll();
         $data = $this->request->getVar('data');
         $id_aspek = $this->request->getVar('id_aspek');
+        $id_posisi = $this->request->getVar('id_posisi');
+        $pemain = $this->pemainm->where('id_posisi', $id_posisi)->findAll();
         $exp = explode('&', $data);
-        $nilai = count($exp) / count($pemain); // 3
         $hasil = [];
         $hasil2 = [];
         foreach ($exp as $key => $row) {
@@ -250,15 +265,15 @@ class Nilai_gap extends BaseController
 
             array_push($hasil, [
                 'id_aspek' => $id_aspek,
-                'id_kriteria' => end($valKriteria),
-                'id_pemain' => $pemain[ceil($key / $nilai) - 1]->id,
-                'id_manager' => session('user_id'),
+                'id_kriteria' => $valKriteria[1],
+                'id_pemain' => end($valKriteria),
+                'id_pelatih' => session('user_id'),
                 'nilai_kriteria' => $valKriteria[0]
             ]);
         }
         
         if ($this->nilai_gapm->insertBatch($hasil)) {
-            foreach ($this->pemainm->findAll() as $row) {
+            foreach ($this->pemainm->where('id_posisi', $id_posisi)->findAll() as $row) {
                 $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
                 $coreCoutn = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
                 $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
@@ -266,6 +281,7 @@ class Nilai_gap extends BaseController
                 array_push($hasil2, [
                     'id_pemain' => $row->id,
                     'aspek'     => $id_aspek,
+                    'posisi'    => $id_posisi,
                     'core'      => $core[0]->totalcore / count($coreCoutn),
                     'second'    => $second[0]->totalsecond / count($secondCount),
                     'total'     => (($core[0]->core / 100) * ($core[0]->totalcore / count($coreCoutn))) + (($core[0]->secondary / 100) * ($second[0]->totalsecond) / count($secondCount))

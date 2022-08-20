@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\PemainM;
 use App\Models\PosisiM;
+use App\Models\TimM;
 
 class Pemain extends BaseController
 {
@@ -12,6 +13,7 @@ class Pemain extends BaseController
     {
         $this->pemainm = new PemainM();
         $this->posisim = new PosisiM();
+        $this->timm = new TimM();
     }
     public function index()
     {
@@ -31,6 +33,7 @@ class Pemain extends BaseController
             $row['nomor'] = $no++;
             $row['nama'] = ucwords($rows->nama);
             $row['posisi'] = ucwords($rows->nama_posisi);
+            $row['tim'] = ucwords($rows->nama_tim);
             $row['ttl'] = get_format_date($rows->ttl);
             $row['no_hp'] = $rows->no_hp;
             $row['alamat'] = $rows->alamat;
@@ -51,6 +54,7 @@ class Pemain extends BaseController
         for ($x = 1; $x <= $num_of_row; $x++) {
             $data['nama'] = 'Data ' . $x;
             $data['posisi'] = $this->posisim->findAll();
+            $data['tim'] = $this->timm->findAll();
             $this->data['form_input'][] = view('App\Views\pemain\form_input', $data);
         }
         $status['html']         = view('App\Views\pemain\form_modal', $this->data);
@@ -67,7 +71,8 @@ class Pemain extends BaseController
             $data = array(
                 'nama' => '<b>' . $get->nama . '</b>',
                 'get' => $get,
-                'posisi' => $this->posisim->findAll()
+                'posisi' => $this->posisim->findAll(),
+                'tim' => $this->timm->findAll(),
             );
             $this->data['form_input'][] = view('App\Views\pemain\form_input', $data);
         }
@@ -82,6 +87,7 @@ class Pemain extends BaseController
             case 'insert':
                 $nama = $this->request->getPost('nama');
                 $data = array();
+                $tim = getTimById('manager', session('user_id'))->id;
                 foreach ($nama as $key => $val) {
                     $files = $this->request->getFiles('foto')['foto'][$key];
                     $file_name = $files->getRandomName();
@@ -89,6 +95,7 @@ class Pemain extends BaseController
                         array_push($data, array(
                             'nama' => $this->request->getPost('nama')[$key],
                             'id_posisi' => $this->request->getPost('posisi')[$key],
+                            'id_tim' => is_admin() ? $this->request->getPost('tim')[$key] : $tim,
                             'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
                             'no_hp' => $this->request->getPost('no_hp')[$key],
                             'alamat' => $this->request->getPost('alamat')[$key],
@@ -127,6 +134,7 @@ class Pemain extends BaseController
                                 'no_hp' => $this->request->getPost('no_hp')[$key],
                                 'alamat' => $this->request->getPost('alamat')[$key],
                                 'id_posisi' => $this->request->getPost('posisi')[$key],
+                                'id_tim' => 1,
                                 'foto' => $file_name,
                             ));
                             unlink(WRITEPATH . 'uploads/img/' . $filesold);

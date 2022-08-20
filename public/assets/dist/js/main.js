@@ -5,11 +5,29 @@ $(document).ready(function () {
     ace[token] = csrf_hash
     $.ajaxSetup({ data: ace })
 
-    $('#aspek').on('change', function() {
+    $('#aspek').hide()
+    $('#posisi').on('change', function() {
         let val = $(this).val()
+        let valAspek = $('#aspek').val()
+        if(val != null) {
+            $('#aspek').show()
+        }
         $.ajax({
             url: location.origin + '/Nilai_gap/dataGap',
-            data: {value : val},
+            data: {value : valAspek, posisi: val},
+            type: 'post',
+            success: function(res) {
+                let data = $.parseJSON(res)
+                $('#data-gap').html(data.nilai)
+            }
+        })
+    })
+    $('#aspek').on('change', function() {
+        let val = $(this).val()
+        let valPosisi = $('#posisi').val()
+        $.ajax({
+            url: location.origin + '/Nilai_gap/dataGap',
+            data: {value : val, posisi: valPosisi},
             type: 'post',
             success: function(res) {
                 let data = $.parseJSON(res)

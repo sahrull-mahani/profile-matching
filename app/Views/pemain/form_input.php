@@ -18,6 +18,19 @@
         </select>
     </div>
 </div>
+<?php if (is_admin()) : ?>
+    <div class="form-group row mode2">
+        <label for="tim" class="col-sm-3 col-form-label">Tim</label>
+        <div class="col-sm-9 item">
+            <select class="custom-select" id="tim" name="tim[]">
+                <option selected disabled>Pilih tim...</option>
+                <?php foreach ($tim as $row) : ?>
+                    <option value="<?= $row->id ?>" <?= (isset($get->id)) ? ($get->id == $row->id_tim ? 'selected' : '') : ''; ?>><?= $row->nama ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+<?php endif ?>
 <div class="form-group row mode2">
     <label for="ttl" class="col-sm-3 col-form-label">Tanggal Lahir</label>
     <div class="col-sm-9 item">

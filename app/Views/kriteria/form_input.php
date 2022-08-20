@@ -2,7 +2,7 @@
     <h5><i class="icon fas fa-info"></i> <?= $nama ?></h5>
 </div>
 <div class="form-group row mode2">
-    <label for="id_aspek" class="col-sm-3 col-form-label">Id Aspek</label>
+    <label for="id_aspek" class="col-sm-3 col-form-label">Aspek</label>
     <div class="col-sm-9 item">
         <select class="custom-select" id="id_aspek" name="id_aspek[]">
             <option selected disabled>Pilih Aspek...</option>
@@ -18,7 +18,7 @@
         <input type="text" class="form-control" id="kriteria_penilaian" name="kriteria_penilaian[]" value="<?= (isset($get->kriteria_penilaian)) ? $get->kriteria_penilaian : ''; ?>" placeholder="Kriteria Penilaian" required />
     </div>
 </div>
-<div class="form-group row mode2">
+<!-- <div class="form-group row mode2">
     <label for="target" class="col-sm-3 col-form-label">Target</label>
     <div class="col-sm-9 item">
         <?php $defaults = array('' => '==Pilih Target==');
@@ -31,7 +31,7 @@
         echo form_dropdown('target[]', $defaults + $options, (isset($get->target)) ? $get->target : '', 'class="custom-select" id="target" required');
         ?>
     </div>
-</div>
+</div> -->
 <div class="form-group row mode2">
     <label for="type" class="col-sm-3 col-form-label">Type</label>
     <div class="col-sm-9 item">

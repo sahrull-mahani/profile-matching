@@ -26,29 +26,29 @@ class Kriteria extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $rows) {
-            switch ($rows->target) {
-                case 1:
-                    $target = 'kurang';
-                    break;
-                case 2:
-                    $target = 'cukup';
-                    break;
-                case 3:
-                    $target = 'baik';
-                    break;
-                case 4:
-                    $target = 'sangat baik';
-                    break;
-                default:
-                    $target = 'tidak diketahui';
-                    break;
-            }
+            // switch ($rows->target) {
+            //     case 1:
+            //         $target = 'kurang';
+            //         break;
+            //     case 2:
+            //         $target = 'cukup';
+            //         break;
+            //     case 3:
+            //         $target = 'baik';
+            //         break;
+            //     case 4:
+            //         $target = 'sangat baik';
+            //         break;
+            //     default:
+            //         $target = 'tidak diketahui';
+            //         break;
+            // }
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['id_aspek'] = $rows->aspek_penilaian;
             $row['kriteria_penilaian'] = $rows->kriteria_penilaian;
-            $row['target'] = ucwords($target);
+            $row['target'] = 'not';
             $row['type'] = $rows->type;
             $data[] = $row;
         }
@@ -101,7 +101,7 @@ class Kriteria extends BaseController
                     array_push($data, array(
                         'id_aspek' => $this->request->getPost('id_aspek')[$key],
                         'kriteria_penilaian' => $this->request->getPost('kriteria_penilaian')[$key],
-                        'target' => $this->request->getPost('target')[$key],
+                        'target' => 1,
                         'type' => $this->request->getPost('type')[$key],
                     ));
                 }
@@ -122,7 +122,7 @@ class Kriteria extends BaseController
                         'id' => $val,
                         'id_aspek' => $this->request->getPost('id_aspek')[$key],
                         'kriteria_penilaian' => $this->request->getPost('kriteria_penilaian')[$key],
-                        'target' => $this->request->getPost('target')[$key],
+                        'target' => 1,
                         'type' => $this->request->getPost('type')[$key],
                     ));
                 }

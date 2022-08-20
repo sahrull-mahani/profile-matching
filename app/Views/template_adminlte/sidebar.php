@@ -48,7 +48,7 @@
                         </a>
                     </li>
                 <?php endif ?>
-                <?php if (in_groups('manager')) : ?>
+                <?php if (in_groups([1,3])) : ?>
                     <li class="nav-item">
                         <a href="<?= site_url('/pemain'); ?>" class="nav-link <?= isset($m_pemain) ? $m_pemain : ''; ?>">
                             <i class="nav-icon fas fa-user"></i>
@@ -58,7 +58,7 @@
                         </a>
                     </li>
                 <?php endif ?>
-                <?php if (in_groups('pelatih')) : ?>
+                <?php if (in_groups([1,2])) : ?>
                     <li class="nav-header">Data Master</li>
                     <li class="nav-item">
                         <a href="<?= site_url('/aspek'); ?>" class="nav-link <?= isset($m_aspek) ? $m_aspek : ''; ?>">

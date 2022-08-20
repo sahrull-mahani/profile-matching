@@ -11,17 +11,17 @@
         </thead>
         <tbody>
             <?php $no = 1 ?>
-            <?php foreach ($pemain as $row) : ?>
+            <?php foreach ($pemain as $p) : ?>
                 <tr>
                     <th scope="row"><?= $no++ ?></th>
-                    <td><?= ucwords($row->nama) ?></td>
+                    <td><?= ucwords($p->nama) ?></td>
                     <?php foreach ($kriteria as $key => $row) : ?>
                         <td>
                             <select class="custom-select nilai" name="<?= "nilai$key" ?>">
-                                <option value="<?= "1|$row->id" ?>">Buruk</option>
-                                <option value="<?= "2|$row->id" ?>">Cukup</option>
-                                <option value="<?= "3|$row->id" ?>">Baik</option>
-                                <option value="<?= "4|$row->id" ?>">Sangat Baik</option>
+                                <option value="<?= "1|$row->id|$p->id" ?>">Buruk</option>
+                                <option value="<?= "2|$row->id|$p->id" ?>">Cukup</option>
+                                <option value="<?= "3|$row->id|$p->id" ?>">Baik</option>
+                                <option value="<?= "4|$row->id|$p->id" ?>">Sangat Baik</option>
                             </select>
                         </td>
                     <?php endforeach ?>
@@ -29,7 +29,7 @@
             <?php endforeach ?>
         </tbody>
     </table>
-    <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> | Simpan</button>
+    <button type="submit" class="btn btn-primary float-right simpan"><i class="fa fa-save"></i> | Simpan</button>
 </form>
 <script>
     $('form').on('submit', function(e) {
@@ -39,9 +39,11 @@
             type: 'post',
             data: {
                 data: $(this).serialize(),
-                id_aspek: <?= $aspek ?>
+                id_aspek: <?= $aspek ?>,
+                id_posisi: <?= $posisi ?>,
             },
             success: function(res) {
+                // console.log(res)
                 let data = $.parseJSON(res)
                 Swal.fire({
                     title: data.title,

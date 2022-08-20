@@ -46,8 +46,11 @@ $routes->group('', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('tim', 'Tim::index');
     $routes->get('users', 'Auth::index');
 });
+$routes->group('', ['filter' => 'role:manager,admin'], function ($routes) {
+    $routes->get('pemain', 'Pemain::index');
+});
 
-$routes->group('', ['filter' => 'role:pelatih'], function ($routes) {
+$routes->group('', ['filter' => 'role:pelatih,admin'], function ($routes) {
     $routes->get('aspek', 'Aspek::index');
     $routes->get('kriteria', 'Kriteria::index');
 });
