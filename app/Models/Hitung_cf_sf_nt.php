@@ -53,6 +53,7 @@ class Hitung_cf_sf_nt extends Model
         if (!is_admin()) {
             $this->where('p.id_tim', getTimById('pelatih', session('user_id'))->id);
         }
+        $this->select('hitung_cf_sf_nt.*, a.aspek_penilaian, p.nama');
         $this->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain');
         $this->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek');
     }

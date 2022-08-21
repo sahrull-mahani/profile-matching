@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 15, 2022 at 06:58 PM
+-- Generation Time: Aug 22, 2022 at 06:44 AM
 -- Server version: 10.5.15-MariaDB-0ubuntu0.21.10.1
 -- PHP Version: 8.0.8
 
@@ -38,6 +38,15 @@ CREATE TABLE `aspek` (
   `deleted_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `aspek`
+--
+
+INSERT INTO `aspek` (`id`, `aspek_penilaian`, `persentase`, `core`, `secondary`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Fisik', 40, 30, 30, '2022-08-16', '2022-08-16', NULL),
+(2, 'Mental', 30, 20, 30, '2022-08-16', '2022-08-16', NULL),
+(3, 'Skill', 60, 30, 20, '2022-08-16', '2022-08-16', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -69,6 +78,7 @@ CREATE TABLE `hitung_cf_sf_nt` (
   `id` int(11) NOT NULL,
   `id_pemain` int(11) NOT NULL,
   `aspek` char(150) NOT NULL,
+  `posisi` int(11) UNSIGNED NOT NULL,
   `core` double NOT NULL,
   `second` double NOT NULL,
   `total` double NOT NULL
@@ -90,6 +100,42 @@ CREATE TABLE `kriteria` (
   `updated_at` date DEFAULT NULL,
   `deleted_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `kriteria`
+--
+
+INSERT INTO `kriteria` (`id`, `id_aspek`, `kriteria_penilaian`, `target`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'akselerasi', '4', 'core', '2022-08-16', '2022-08-21', NULL),
+(2, 2, 'Aggression', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(3, 1, 'Agility', '3', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(4, 2, 'attacking position', '1', 'core', '2022-08-18', '2022-08-21', NULL),
+(5, 2, 'awareness', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(6, 1, 'balance', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(7, 3, 'ball controll', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(8, 2, 'composure', '1', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(9, 3, 'crossing', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(10, 3, 'curve', '4', 'core', '2022-08-18', '2022-08-21', NULL),
+(11, 3, 'defending', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(12, 3, 'dribbling', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(13, 3, 'finishing', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(14, 3, 'free kick', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(15, 2, 'heading', '4', 'core', '2022-08-18', '2022-08-21', NULL),
+(16, 2, 'ceptions', '2', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(17, 1, 'jumping', '2', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(18, 3, 'long passing', '3', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(19, 3, 'long shot', '4', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(20, 2, 'marking', '2', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(21, 3, 'overall rating', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(22, 1, 'pace', '3', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(23, 3, 'passing', '3', 'core', '2022-08-18', '2022-08-21', NULL),
+(24, 3, 'pinalti', '2', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(25, 3, 'fisik', '4', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(26, 2, 'positioning', '2', 'core', '2022-08-18', '2022-08-21', NULL),
+(27, 1, 'reaction', '2', 'secondary', '2022-08-18', '2022-08-21', NULL),
+(28, 3, 'shooting', '1', 'core', '2022-08-18', '2022-08-21', NULL),
+(29, 3, 'short pass', '4', 'core', '2022-08-18', '2022-08-21', NULL),
+(30, 3, 'shot power', '4', 'core', '2022-08-18', '2022-08-21', NULL);
 
 -- --------------------------------------------------------
 
@@ -155,15 +201,13 @@ CREATE TABLE `nilai_bobot` (
 --
 
 INSERT INTO `nilai_bobot` (`id`, `selisih`, `bobot_nilai`, `ket`) VALUES
-(1, 0, '5', 'tidak ada selisih (kompetensi sesuai yang dibutuhkan)'),
-(2, 1, '4.5', 'kompetensi individu kelebihan 1 tingkat/level'),
-(3, -1, '4', 'kompetensi individu kekurangan 1 tingkat/level'),
-(4, 2, '3.5', 'kompetensi individu kelebihan 2 tingkat/level'),
-(5, -2, '3', 'kompetensi individu kekurangan 2 tingkat/level'),
-(6, 3, '2.5', 'kompetensi individu kelebihan 3 tingkat/level'),
-(7, -3, '2', 'kompetensi individu kekurangan 3 tingkat/level'),
-(8, 4, '1.5', 'kompetensi individu kelebihan 4 tingkat/level'),
-(9, -4, '1', 'kompetensi individu kekurangan 4 tingkat/level');
+(1, 0, '4', 'tidak ada selisih (kompetensi sesuai yang dibutuhkan)'),
+(2, 1, '3.5', 'kompetensi individu kelebihan 1 tingkat/level'),
+(3, -1, '3', 'kompetensi individu kekurangan 1 tingkat/level'),
+(4, 2, '2.5', 'kompetensi individu kelebihan 2 tingkat/level'),
+(5, -2, '2', 'kompetensi individu kekurangan 2 tingkat/level'),
+(6, 3, '1.5', 'kompetensi individu kelebihan 3 tingkat/level'),
+(7, -3, '1', 'kompetensi individu kekurangan 3 tingkat/level');
 
 -- --------------------------------------------------------
 
@@ -176,7 +220,7 @@ CREATE TABLE `nilai_gap` (
   `id_aspek` int(10) UNSIGNED NOT NULL,
   `id_kriteria` int(10) UNSIGNED NOT NULL,
   `id_pemain` int(10) UNSIGNED NOT NULL,
-  `id_manager` int(6) UNSIGNED NOT NULL,
+  `id_pelatih` int(6) UNSIGNED NOT NULL,
   `nilai_kriteria` tinyint(3) NOT NULL,
   `created_at` date DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
@@ -193,6 +237,7 @@ CREATE TABLE `pemain` (
   `id` int(11) UNSIGNED NOT NULL,
   `nama` char(150) NOT NULL,
   `id_posisi` int(10) UNSIGNED NOT NULL,
+  `id_tim` int(10) UNSIGNED NOT NULL,
   `ttl` date NOT NULL,
   `no_hp` char(15) NOT NULL,
   `alamat` text NOT NULL,
@@ -206,8 +251,19 @@ CREATE TABLE `pemain` (
 -- Dumping data for table `pemain`
 --
 
-INSERT INTO `pemain` (`id`, `nama`, `id_posisi`, `ttl`, `no_hp`, `alamat`, `foto`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'pemain satu', 1, '1998-09-10', '082312340099', 'jln rajawali', '1660560623_a616dd0102b05ba73d65.jpg', '2022-08-15', '2022-08-15', NULL);
+INSERT INTO `pemain` (`id`, `nama`, `id_posisi`, `id_tim`, `ttl`, `no_hp`, `alamat`, `foto`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'pemain satu', 1, 1, '1999-09-09', '082312340099', 'jln rajawali', '1660696115_c82e90d67bbb56db1f30.png', '2022-08-16', '2022-08-16', NULL),
+(2, 'pemain dua', 1, 1, '1999-01-09', '082312340099', 'jln rajawali', '1660696966_204a0dca91b49566eff9.png', '2022-08-16', '2022-08-16', NULL),
+(3, 'pemain tiga', 1, 1, '1999-01-10', '082312340099', 'jln rajawali', '1660697048_83ff4370a37b60e1700e.png', '2022-08-16', '2022-08-16', NULL),
+(4, 'pemain empat', 1, 1, '2000-09-10', '08299', 'jln rajawali', '1660697077_8f8e2365b83a3ced220c.png', '2022-08-16', '2022-08-16', NULL),
+(5, 'pemain lima', 1, 1, '1998-10-10', '0822', 'boroko', '1660697110_a69f8be8ed966b04a25a.png', '2022-08-16', '2022-08-16', NULL),
+(6, 'pemain enam', 2, 1, '1990-01-09', '082', 'jln rajawali', '1660962602_d0e024bafda9e3ce8959.png', '2022-08-19', '2022-08-19', NULL),
+(7, 'pemain tujuh', 2, 1, '1999-01-09', '08', 'jln rajawali', '1660962602_b244f907d16e6cdbc5f5.png', '2022-08-19', '2022-08-19', NULL),
+(8, 'pemain delapan', 2, 1, '1998-09-01', '0822', 'jln rajawali', '1660962602_74f6c7cfcf682f43387e.png', '2022-08-19', '2022-08-19', NULL),
+(9, 'pemain sembilan', 2, 1, '1999-09-01', '08', 'boroko', '1660962603_9104de0d308322b112cb.png', '2022-08-19', '2022-08-19', NULL),
+(10, 'pemain sepuluh', 2, 1, '1990-10-10', '0899', 'jln rajawali', '1660962603_00ba0ef99f5bb54c4425.png', '2022-08-19', '2022-08-19', NULL),
+(11, 'pemain sebelas', 2, 1, '1998-08-09', '08', 'jln rajawali', '1660962603_f126b12de79fd630cf54.png', '2022-08-19', '2022-08-19', NULL),
+(12, 'alvi', 2, 1, '2001-08-02', '082312340096', 'jln siswa', '1661073490_1784c343493061d0c59e.png', '2022-08-21', '2022-08-21', NULL);
 
 -- --------------------------------------------------------
 
@@ -293,11 +349,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `nama_user`, `img`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$12$OX4Ybrt4BSOOj5tH8ecq.OnNIJH/P6KoYC0MHhx7yIw/cKtuQlxmG', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1660555866, 1, 'Admin', NULL, '0'),
-(2, '127.0.0.1', 'andika@gmail.com', '$2y$10$OUdIQaX.6PzeANbPrOh2aeaIB1cStOKU/iRsaSEAtrTmHf2347OiS', 'andika@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556283, NULL, 1, 'andika pratama', NULL, '081233440989'),
-(3, '127.0.0.1', 'wendi@gmail.com', '$2y$10$2v87vUoLmPi0wiwnzU472uFvUtK/UGKuXB6.b1kwFsV8cCgEqwZhe', 'wendi@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556311, NULL, 1, 'wendi cagur', NULL, '081209908899'),
-(4, '127.0.0.1', 'andre@gmail.com', '$2y$10$DComA/NuDHGk.BUjgesbcek.A911WQEI4iWFJ00vswuMi9HtUJksK', 'andre@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556333, NULL, 1, 'andre gemintang', NULL, '082288990099'),
-(5, '127.0.0.1', 'surya@gmail.com', '$2y$10$9gk8V9Od24B5R2uBkSPeu.DykBW/D.Y1l8qOTh6Epdwggs/s.NIbG', 'surya@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556365, NULL, 1, 'surya wiradarma', NULL, '082344667788');
+(1, '127.0.0.1', 'administrator', '$2y$12$OX4Ybrt4BSOOj5tH8ecq.OnNIJH/P6KoYC0MHhx7yIw/cKtuQlxmG', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1661117251, 1, 'Admin', NULL, '0'),
+(2, '127.0.0.1', 'andika@gmail.com', '$2y$10$OUdIQaX.6PzeANbPrOh2aeaIB1cStOKU/iRsaSEAtrTmHf2347OiS', 'andika@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556283, 1660962335, 1, 'andika pratama', NULL, '081233440989'),
+(3, '127.0.0.1', 'wendi@gmail.com', '$2y$10$2v87vUoLmPi0wiwnzU472uFvUtK/UGKuXB6.b1kwFsV8cCgEqwZhe', 'wendi@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556311, 1661117315, 1, 'wendi cagur', NULL, '081209908899'),
+(4, '127.0.0.1', 'andre@gmail.com', '$2y$10$DComA/NuDHGk.BUjgesbcek.A911WQEI4iWFJ00vswuMi9HtUJksK', 'andre@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556333, 1661117341, 1, 'andre gemintang', NULL, '082288990099'),
+(5, '127.0.0.1', 'surya@gmail.com', '$2y$10$9gk8V9Od24B5R2uBkSPeu.DykBW/D.Y1l8qOTh6Epdwggs/s.NIbG', 'surya@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1660556365, 1660962323, 1, 'surya wiradarma', NULL, '082344667788'),
+(6, '127.0.0.1', 'alvi@gmail.com', '$2y$10$9YBjb.S/YvbYS9xIhm/DxeRuYosWmcArt8g18rsEH6wemXWj1srEm', 'alvi@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1661071738, NULL, 1, 'alvi', NULL, '082209');
 
 -- --------------------------------------------------------
 
@@ -320,7 +377,8 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (16, 3, 3),
 (18, 5, 3),
 (19, 4, 2),
-(20, 2, 2);
+(20, 2, 2),
+(22, 6, 2);
 
 --
 -- Indexes for dumped tables
@@ -376,7 +434,7 @@ ALTER TABLE `nilai_gap`
   ADD KEY `id_aspek` (`id_aspek`),
   ADD KEY `id_kriteria` (`id_kriteria`),
   ADD KEY `id_pemain` (`id_pemain`),
-  ADD KEY `id_manager` (`id_manager`);
+  ADD KEY `id_pelatih` (`id_pelatih`) USING BTREE;
 
 --
 -- Indexes for table `pemain`
@@ -418,7 +476,7 @@ ALTER TABLE `users_groups`
 -- AUTO_INCREMENT for table `aspek`
 --
 ALTER TABLE `aspek`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `groups`
@@ -436,7 +494,7 @@ ALTER TABLE `hitung_cf_sf_nt`
 -- AUTO_INCREMENT for table `kriteria`
 --
 ALTER TABLE `kriteria`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -454,7 +512,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `nilai_bobot`
 --
 ALTER TABLE `nilai_bobot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `nilai_gap`
@@ -466,7 +524,7 @@ ALTER TABLE `nilai_gap`
 -- AUTO_INCREMENT for table `pemain`
 --
 ALTER TABLE `pemain`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `posisi`
@@ -484,13 +542,13 @@ ALTER TABLE `tim`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -503,7 +561,7 @@ ALTER TABLE `nilai_gap`
   ADD CONSTRAINT `nilai_gap_ibfk_1` FOREIGN KEY (`id_aspek`) REFERENCES `aspek` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `nilai_gap_ibfk_2` FOREIGN KEY (`id_kriteria`) REFERENCES `kriteria` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `nilai_gap_ibfk_3` FOREIGN KEY (`id_pemain`) REFERENCES `pemain` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `nilai_gap_ibfk_4` FOREIGN KEY (`id_manager`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `nilai_gap_ibfk_4` FOREIGN KEY (`id_pelatih`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `users_groups`

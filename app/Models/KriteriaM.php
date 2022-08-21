@@ -52,6 +52,7 @@ class KriteriaM extends Model
             $this->orderBy('id', 'asc');
         }
 
+        $this->select('kriteria.*, a.aspek_penilaian');
         $this->join('aspek a', 'a.id = kriteria.id_aspek');
     }
     public function get_datatables()

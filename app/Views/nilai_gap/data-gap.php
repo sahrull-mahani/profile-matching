@@ -1,34 +1,36 @@
 <form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama</th>
-                <?php foreach ($kriteria as $row) : ?>
-                    <th scope="col"><?= $row->kriteria_penilaian ?></th>
-                <?php endforeach ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $no = 1 ?>
-            <?php foreach ($pemain as $p) : ?>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th scope="row"><?= $no++ ?></th>
-                    <td><?= ucwords($p->nama) ?></td>
-                    <?php foreach ($kriteria as $key => $row) : ?>
-                        <td>
-                            <select class="custom-select nilai" name="<?= "nilai$key" ?>">
-                                <option value="<?= "1|$row->id|$p->id" ?>">Buruk</option>
-                                <option value="<?= "2|$row->id|$p->id" ?>">Cukup</option>
-                                <option value="<?= "3|$row->id|$p->id" ?>">Baik</option>
-                                <option value="<?= "4|$row->id|$p->id" ?>">Sangat Baik</option>
-                            </select>
-                        </td>
+                    <th scope="col">#</th>
+                    <th scope="col">Nama</th>
+                    <?php foreach ($kriteria as $row) : ?>
+                        <th scope="col"><?= $row->kriteria_penilaian ?></th>
                     <?php endforeach ?>
                 </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php $no = 1 ?>
+                <?php foreach ($pemain as $p) : ?>
+                    <tr>
+                        <th scope="row"><?= $no++ ?></th>
+                        <td><?= ucwords($p->nama) ?></td>
+                        <?php foreach ($kriteria as $key => $row) : ?>
+                            <td>
+                                <select class="custom-select nilai" name="<?= "nilai$key" ?>">
+                                    <option value="<?= "1|$row->id|$p->id" ?>">Buruk</option>
+                                    <option value="<?= "2|$row->id|$p->id" ?>">Cukup</option>
+                                    <option value="<?= "3|$row->id|$p->id" ?>">Baik</option>
+                                    <option value="<?= "4|$row->id|$p->id" ?>">Sangat Baik</option>
+                                </select>
+                            </td>
+                        <?php endforeach ?>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
     <button type="submit" class="btn btn-primary float-right simpan"><i class="fa fa-save"></i> | Simpan</button>
 </form>
 <script>

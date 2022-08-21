@@ -18,20 +18,20 @@
         <input type="text" class="form-control" id="kriteria_penilaian" name="kriteria_penilaian[]" value="<?= (isset($get->kriteria_penilaian)) ? $get->kriteria_penilaian : ''; ?>" placeholder="Kriteria Penilaian" required />
     </div>
 </div>
-<!-- <div class="form-group row mode2">
-    <label for="target" class="col-sm-3 col-form-label">Target</label>
+<div class="form-group row mode2">
+    <label for="target" class="col-sm-3 col-form-label">Standar</label>
     <div class="col-sm-9 item">
-        <?php $defaults = array('' => '==Pilih Target==');
+        <?php $defaults = array('' => '==Pilih Standar Nilai==');
         $options = array(
-            '1' => 'kurang',
-            '2' => 'cukup',
-            '3' => 'baik',
-            '4' => 'sangat baik',
+            '1' => '1',
+            '2' => '2',
+            '3' => '3',
+            '4' => '4',
         );
         echo form_dropdown('target[]', $defaults + $options, (isset($get->target)) ? $get->target : '', 'class="custom-select" id="target" required');
         ?>
     </div>
-</div> -->
+</div>
 <div class="form-group row mode2">
     <label for="type" class="col-sm-3 col-form-label">Type</label>
     <div class="col-sm-9 item">

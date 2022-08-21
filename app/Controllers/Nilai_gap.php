@@ -31,8 +31,8 @@ class Nilai_gap extends BaseController
             'url' => 'nilai_gap/',
             'm_nilai_gap' => 'active',
             'session' => $this->session,
-            'posisi' => $this->posisim->select('posisi.*, h.posisi')->join('hitung_cf_sf_nt h', 'h.posisi = posisi.id', 'left')->groupBy('posisi.id')->where('posisi', null)->findALl(),
-            'aspek' => $this->aspekm->findAll(),
+            'posisi' => $this->posisim->findALl(),
+            'aspek' => $this->aspekm->select('aspek.*')->join('hitung_cf_sf_nt h', 'h.aspek = aspek.id', 'left')->where('h.aspek', null)->findAll(),
             'nilaiCfSf'=>$this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
         );
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
@@ -87,7 +87,7 @@ class Nilai_gap extends BaseController
             $row['id_aspek'] = $rows->aspek_penilaian;
             $row['id_kriteria'] = $rows->kriteria_penilaian;
             $row['id_pemain'] = $rows->nama;
-            $row['nilai_kriteria'] = $nilai;
+            $row['nilai_kriteria'] = "$rows->nilai_kriteria $rows->ket";
             $row['nilai_bobot'] = $rows->bobot_nilai;
             $data[] = $row;
         }
@@ -268,7 +268,7 @@ class Nilai_gap extends BaseController
                 'id_kriteria' => $valKriteria[1],
                 'id_pemain' => end($valKriteria),
                 'id_pelatih' => session('user_id'),
-                'nilai_kriteria' => $valKriteria[0]
+                'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target
             ]);
         }
         

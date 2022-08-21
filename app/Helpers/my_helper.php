@@ -173,3 +173,8 @@ function getTimById($jabatan, $id) {
     $db = db_connect();
     return $db->table('tim t')->select('t.*')->join('users u', "u.id = t.$jabatan")->where($jabatan, $id)->get()->getRow();
 }
+
+function getKriteriaById($id) {
+    $db = db_connect();
+    return $db->table('kriteria')->where('id', $id)->get()->getRow();
+}
