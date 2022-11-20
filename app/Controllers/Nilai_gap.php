@@ -33,7 +33,7 @@ class Nilai_gap extends BaseController
             'session' => $this->session,
             'posisi' => $this->posisim->findALl(),
             'aspek' => $this->aspekm->select('aspek.*')->join('hitung_cf_sf_nt h', 'h.aspek = aspek.id', 'left')->where('h.aspek', null)->findAll(),
-            'nilaiCfSf'=>$this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
+            'nilaiCfSf' => $this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
         );
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
     }
@@ -67,7 +67,7 @@ class Nilai_gap extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $rows) {
-            switch($rows->nilai_kriteria) {
+            switch ($rows->nilai_kriteria) {
                 case 1:
                     $nilai = 'Buruk';
                     break;
@@ -107,11 +107,11 @@ class Nilai_gap extends BaseController
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
-            $row['id_pemain'] = $rows->nama;
-            $row['aspek'] = $rows->aspek_penilaian;
-            $row['core'] = $rows->core;
-            $row['second'] = $rows->second;
-            $row['total'] = substr($rows->total, 0, 4);
+            $row['id_pemain'] = ucwords($rows->nama);
+            $row['aspek'] = ucfirst($rows->aspek_penilaian);
+            $row['core'] = sprintf('%.2f', $rows->core);
+            $row['second'] = sprintf("%.2f", $rows->second);
+            $row['total'] = sprintf('%.2f', $rows->total);
             $data[] = $row;
         }
         $output = array(
@@ -130,9 +130,9 @@ class Nilai_gap extends BaseController
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
-            $row['id_pemain'] = $rows->nama;
-            $row['posisi'] = $rows->nama_posisi;
-            $row['hasil'] = substr($rows->hasil, 0, 4);
+            $row['id_pemain'] = ucwords($rows->nama);
+            $row['posisi'] = strtoupper($rows->nama_posisi);
+            $row['hasil'] = sprintf('%.2f', $rows->hasil);
             $data[] = $row;
         }
         $output = array(
@@ -252,7 +252,6 @@ class Nilai_gap extends BaseController
         $data = $this->request->getVar('data');
         $id_aspek = $this->request->getVar('id_aspek');
         $id_posisi = $this->request->getVar('id_posisi');
-        $pemain = $this->pemainm->where('id_posisi', $id_posisi)->findAll();
         $exp = explode('&', $data);
         $hasil = [];
         $hasil2 = [];
@@ -271,20 +270,21 @@ class Nilai_gap extends BaseController
                 'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target
             ]);
         }
-        
+
         if ($this->nilai_gapm->insertBatch($hasil)) {
-            foreach ($this->pemainm->where('id_posisi', $id_posisi)->findAll() as $row) {
-                $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
-                $coreCoutn = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
-                $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+            $pemain = $this->pemainm->where('id_posisi', $id_posisi)->where('id_tim', getTimById('pelatih', session('user_id'))->id)->findAll();
+            foreach ($pemain as $row) {
+                $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->first();
+                $coreCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+                $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->first();
                 $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
                 array_push($hasil2, [
                     'id_pemain' => $row->id,
                     'aspek'     => $id_aspek,
                     'posisi'    => $id_posisi,
-                    'core'      => $core[0]->totalcore / count($coreCoutn),
-                    'second'    => $second[0]->totalsecond / count($secondCount),
-                    'total'     => (($core[0]->core / 100) * ($core[0]->totalcore / count($coreCoutn))) + (($core[0]->secondary / 100) * ($second[0]->totalsecond) / count($secondCount))
+                    'core'      => $core->totalcore / count($coreCount),
+                    'second'    => $second->totalsecond / count($secondCount),
+                    'total'     => (($core->core / 100) * ($core->totalcore / count($coreCount))) + (($core->secondary / 100) * ($second->totalsecond) / count($secondCount))
                 ]);
             }
             if ($this->hitungCfSfM->insertBatch($hasil2)) {
