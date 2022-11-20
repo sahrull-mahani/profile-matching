@@ -617,6 +617,10 @@ class IonAuthModel
 		} else {
 			$builder->orderBy('id', 'asc');
 		}
+		$builder->select('users.*, t.nama, ti.nama as namaTIM');
+		$builder->join('tim t', 't.pelatih = users.id', 'left');
+		$builder->join('tim ti', 'ti.manager = users.id', 'left');
+		$builder->orderBy('users.id', 'asc');
 
 		if ($_GET['limit'] != -1) $builder->limit($_GET['limit'], $_GET['offset']);
 		return $builder;
