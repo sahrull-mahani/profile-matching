@@ -87,7 +87,6 @@ class Pemain extends BaseController
             case 'insert':
                 $nama = $this->request->getPost('nama');
                 $data = array();
-                $tim = getTimById('manager', session('user_id'))->id;
                 foreach ($nama as $key => $val) {
                     $files = $this->request->getFiles('foto')['foto'][$key];
                     $file_name = $files->getRandomName();
@@ -95,7 +94,7 @@ class Pemain extends BaseController
                         array_push($data, array(
                             'nama' => $this->request->getPost('nama')[$key],
                             'id_posisi' => $this->request->getPost('posisi')[$key],
-                            'id_tim' => is_admin() ? $this->request->getPost('tim')[$key] : $tim,
+                            'id_tim' => is_admin() ? $this->request->getPost('tim')[$key] : getTimById('manager', session('user_id'))->id,
                             'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
                             'no_hp' => $this->request->getPost('no_hp')[$key],
                             'alamat' => $this->request->getPost('alamat')[$key],
@@ -137,9 +136,11 @@ class Pemain extends BaseController
                                 'id_tim' => 1,
                                 'foto' => $file_name,
                             ));
-                            if (file_exists(WRITEPATH . 'uploads/img/' . $filesold)) {
-                                unlink(WRITEPATH . 'uploads/img/' . $filesold);
-                                unlink(WRITEPATH . 'uploads/thumbs/' . $filesold);
+                            $pathIMG = WRITEPATH . 'uploads/img/' . $filesold;
+                            $pathTHUMBS = WRITEPATH . 'uploads/thumbs/' . $filesold;
+                            if (file_exists($pathIMG) && file_exists($pathTHUMBS)) {
+                                unlink($pathIMG);
+                                unlink($pathTHUMBS);
                             }
                         }
                     } else {

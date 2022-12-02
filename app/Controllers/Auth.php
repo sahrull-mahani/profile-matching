@@ -534,6 +534,7 @@ class Auth extends BaseController
             $row['username'] = $rows->username;
             $row['email'] = $rows->email;
             $row['group'] = $group;
+            $row['tim'] = $rows->namaTIM ?? $rows->nama;
             $row['active'] = $rows->active
                 ? '<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="activate(' .
                 "'" .

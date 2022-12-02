@@ -11,9 +11,9 @@
     <label for="posisi" class="col-sm-3 col-form-label">Posisi</label>
     <div class="col-sm-9 item">
         <select class="custom-select" id="posisi" name="posisi[]">
-            <option selected disabled>Pilih posisi...</option>
+            <option selected disabled>Pilih Posisi...</option>
             <?php foreach ($posisi as $row) : ?>
-                <option value="<?= $row->id ?>" <?= (isset($get->id)) ? ($get->id == $row->id_posisi ? 'selected' : '') : ''; ?>><?= $row->nama_posisi ?></option>
+                <option value="<?= $row->id ?>" <?= (isset($get->id_posisi)) ? ($get->id_posisi == $row->id ? 'selected' : '') : ''; ?>><?= $row->nama_posisi ?></option>
             <?php endforeach ?>
         </select>
     </div>
@@ -23,9 +23,9 @@
         <label for="tim" class="col-sm-3 col-form-label">Tim</label>
         <div class="col-sm-9 item">
             <select class="custom-select" id="tim" name="tim[]">
-                <option selected disabled>Pilih tim...</option>
+                <option selected disabled>Pilih Tim...</option>
                 <?php foreach ($tim as $row) : ?>
-                    <option value="<?= $row->id ?>" <?= (isset($get->id)) ? ($get->id == $row->id_tim ? 'selected' : '') : ''; ?>><?= $row->nama ?></option>
+                    <option value="<?= $row->id ?>" <?= (isset($get->id_tim)) ? ($get->id_tim == $row->id ? 'selected' : '') : ''; ?>><?= $row->nama ?></option>
                 <?php endforeach ?>
             </select>
         </div>
