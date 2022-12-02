@@ -137,8 +137,10 @@ class Pemain extends BaseController
                                 'id_tim' => 1,
                                 'foto' => $file_name,
                             ));
-                            unlink(WRITEPATH . 'uploads/img/' . $filesold);
-                            unlink(WRITEPATH . 'uploads/thumbs/' . $filesold);
+                            if (file_exists(WRITEPATH . 'uploads/img/' . $filesold)) {
+                                unlink(WRITEPATH . 'uploads/img/' . $filesold);
+                                unlink(WRITEPATH . 'uploads/thumbs/' . $filesold);
+                            }
                         }
                     } else {
                         array_push($data, [
@@ -189,8 +191,7 @@ class Pemain extends BaseController
                 'rules' => 'uploaded[foto]'
                     . '|is_image[foto]'
                     . '|mime_in[foto,image/jpg,image/jpeg,image/png]'
-                    . '|max_size[foto,2048]'
-                    . '|max_dims[foto,1920,1080]',
+                    . '|max_size[foto,3072]'
             ],
         ];
         if (!$this->validate($validationRule)) {
@@ -198,11 +199,6 @@ class Pemain extends BaseController
             return false;
         }
         $filepath = WRITEPATH . 'uploads/';
-        $file_old = $this->request->getPost('old_file');
-        if (!empty($file_old)) {
-            delete_files($filepath . 'img/', $file_old); //Hapus terlebih dahulu jika file ada
-            delete_files($filepath . 'thumbs/', $file_old); //Hapus terlebih dahulu jika file ada
-        }
         if ($img->isValid() && !$img->hasMoved()) {
             $image = \Config\Services::image('gd'); //Load Image Libray
             $image->withFile($img)->fit(1024, 768)->save($filepath . 'img/' . $file_name);
