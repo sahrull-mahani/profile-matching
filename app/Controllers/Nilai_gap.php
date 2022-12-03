@@ -32,7 +32,8 @@ class Nilai_gap extends BaseController
             'm_nilai_gap' => 'active',
             'session' => $this->session,
             'posisi' => $this->posisim->findALl(),
-            'aspek' => $this->aspekm->select('aspek.*')->join('hitung_cf_sf_nt h', 'h.aspek = aspek.id', 'left')->where('h.aspek', null)->findAll(),
+            // 'aspek' => $this->aspekm->select('aspek.*')->join('hitung_cf_sf_nt h', 'h.aspek = aspek.id', 'left')->whereNotIn('h.aspek', null)->findAll(),
+            'aspek' => $this->aspekm->select('aspek.*')->findAll(),
             'nilaiCfSf' => $this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
         );
         echo view('App\Views\nilai_gap\nilai_gap_list', $this->data);
@@ -255,6 +256,12 @@ class Nilai_gap extends BaseController
         $exp = explode('&', $data);
         $hasil = [];
         $hasil2 = [];
+        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_pelatih', session('user_id'))->countAllResults() > 0) {
+            $status['title'] = 'gagal';
+            $status['type'] = 'error';
+            $status['text'] = '<strong>Oh snap!</strong> Aspek sudah terdaftar.';
+            return json_encode($status);
+        }
         foreach ($exp as $key => $row) {
             $key++;
             $row = explode('=', $row);
