@@ -16,6 +16,7 @@ class Tim extends Migration
 			'alamat' => ['type' => 'text'],
 			'pelatih' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'manager' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
+			'formasi' => ['type' => 'char', 'constraint' => 8],
 			'created_at' => ['type' => 'date', 'constraint' => 0],
 			'updated_at' => ['type' => 'date', 'constraint' => 0],
 			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],

@@ -14,7 +14,7 @@ class Pemain extends Migration
 			'id_posisi' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'id_tim' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'ttl' => ['type' => 'date'],
-			'no_hp' => ['type' => 'char', 'constraint' => 15],
+			'no_telp' => ['type' => 'char', 'constraint' => 15],
 			'alamat' => ['type' => 'text'],
 			'foto' => ['type' => 'char', 'constraint' => 150],
 			'created_at' => ['type' => 'date', 'constraint' => 0],

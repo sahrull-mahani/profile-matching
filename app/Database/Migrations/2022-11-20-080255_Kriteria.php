@@ -13,7 +13,7 @@ class Kriteria extends Migration
 			'id_aspek' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'kriteria_penilaian' => ['type' => 'char', 'constraint' => 150],
 			'target' => ['type' => 'enum', 'constraint' => ['1','2','3','4']],
-			'target' => ['type' => 'enum', 'constraint' => ['core','secondary']],
+			'type' => ['type' => 'enum', 'constraint' => ['core','secondary']],
 			'created_at' => ['type' => 'date', 'constraint' => 0],
 			'updated_at' => ['type' => 'date', 'constraint' => 0],
 			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],

@@ -5,7 +5,7 @@ namespace App\Database\Seeds;
 use CodeIgniter\Database\Seeder;
 use CodeIgniter\I18n\Time;
 
-class IonAuthSeeder extends Seeder
+class BasicSeeder extends Seeder
 {
 	/**
 	 * Dumping data for table 'groups', 'users, 'users_groups'
@@ -49,7 +49,6 @@ class IonAuthSeeder extends Seeder
 			'active'                  => '1',
 			'nama_user'               => 'Admin',
 			'img'                     => null,
-			'skpd_id'                 => 1,
 			'phone'                   => '0',
 		];
 		$this->db->table($tables['users'])->insert($user);
