@@ -1,8 +1,13 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
+
 use CodeIgniter\Model;
-class PemainM extends Model{ 
+
+class PemainM extends Model
+{
     protected $table = 'pemain';
-    protected $allowedFields = array('nama', 'id_posisi', 'id_tim','ttl','no_hp','alamat','foto');
+    protected $allowedFields = array('nama', 'id_posisi', 'id_tim', 'ttl', 'no_telp', 'alamat', 'foto');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -11,56 +16,61 @@ class PemainM extends Model{
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    protected $validationRules = ['nama' => 'required|max_length[150]',
-		'id_posisi' => 'required|max_length[10]',
-		'id_tim' => 'required|max_length[10]',
-		'no_hp' => 'required|max_length[15]',
-		'alamat' => 'required|max_length[65535]',
-		'foto' => 'required|max_length[150]',
-			];
+    protected $validationRules = [
+        'nama' => 'required|max_length[150]',
+        'id_posisi' => 'required|max_length[10]',
+        'id_tim' => 'required|max_length[10]',
+        'no_telp' => 'required|max_length[15]',
+        'alamat' => 'required|max_length[65535]',
+        'foto' => 'required|max_length[150]',
+    ];
 
-    protected $validationMessages = ['nama' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
-		'id_posisi' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 10 Karakter'],
-		'id_tim' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 10 Karakter'],
-		'no_hp' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 15 Karakter'],
-		'alamat' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 65535 Karakter'],
-		'foto' => ['required' => 'tidak boleh kosong','max_length' => 'Maximal 150 Karakter'],
-		];
-    private function _get_datatables(){
-        $column_search = array('nama','ttl','no_hp','alamat','foto');
+    protected $validationMessages = [
+        'nama' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 150 Karakter'],
+        'id_posisi' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 10 Karakter'],
+        'id_tim' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 10 Karakter'],
+        'no_telp' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 15 Karakter'],
+        'alamat' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 65535 Karakter'],
+        'foto' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 150 Karakter'],
+    ];
+    private function _get_datatables()
+    {
+        $column_search = array('nama', 'ttl', 'no_hp', 'alamat', 'foto');
         $i = 0;
-        foreach ($column_search as $item){ // loop column 
-            if($_GET['search']){
-                if($i===0){
-                    $this->groupStart(); 
-                    $this->like($item,$_GET['search']);
-                }else{
+        foreach ($column_search as $item) { // loop column 
+            if ($_GET['search']) {
+                if ($i === 0) {
+                    $this->groupStart();
+                    $this->like($item, $_GET['search']);
+                } else {
                     $this->orLike($item, $_GET['search']);
                 }
-                if(count($column_search) - 1 == $i)
+                if (count($column_search) - 1 == $i)
                     $this->groupEnd();
             }
             $i++;
         }
-        if(isset($_GET['order'])){
+        if (isset($_GET['order'])) {
             $this->orderBy($_GET['sort'], $_GET['order']);
-        }else{
+        } else {
             $this->orderBy('id', 'asc');
         }
         $this->select('pemain.*, p.nama_posisi, t.nama nama_tim');
-        if(!is_admin()) {
+        if (!is_admin()) {
             $this->where('t.id', getTimById('manager', session('user_id'))->id);
         }
         $this->join('posisi p', 'p.id = pemain.id_posisi');
         $this->join('tim t', 't.id = pemain.id_tim');
     }
-    public function get_datatables(){
+    public function get_datatables()
+    {
         $this->_get_datatables();
         $limit = isset($_GET['limit']) ? $_GET['limit'] : 0;
         $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
-        return $this->findAll($limit,$offset);
+        return $this->findAll($limit, $offset);
     }
-    public function total(){
+    public function total()
+    {
         $this->_get_datatables();
         if ($this->tempUseSoftDeletes) {
             $this->where($this->table . '.' . $this->deletedField, null);

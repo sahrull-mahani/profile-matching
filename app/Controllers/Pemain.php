@@ -35,7 +35,7 @@ class Pemain extends BaseController
             $row['posisi'] = ucwords($rows->nama_posisi);
             $row['tim'] = ucwords($rows->nama_tim);
             $row['ttl'] = get_format_date($rows->ttl);
-            $row['no_hp'] = $rows->no_hp;
+            $row['no_hp'] = $rows->no_telp;
             $row['alamat'] = $rows->alamat;
             $row['foto'] = '<img width="150" alt="Foto pemain" src="' . site_url("Pemain/img_thumb/" . $rows->foto) . '" class="mb-3 img-responsive" />';
             $data[] = $row;
@@ -96,7 +96,7 @@ class Pemain extends BaseController
                             'id_posisi' => $this->request->getPost('posisi')[$key],
                             'id_tim' => is_admin() ? $this->request->getPost('tim')[$key] : getTimById('manager', session('user_id'))->id,
                             'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
-                            'no_hp' => $this->request->getPost('no_hp')[$key],
+                            'no_telp' => $this->request->getPost('no_telp')[$key],
                             'alamat' => $this->request->getPost('alamat')[$key],
                             'foto' => $file_name,
                         ));
@@ -130,7 +130,7 @@ class Pemain extends BaseController
                                 'id' => $val,
                                 'nama' => $this->request->getPost('nama')[$key],
                                 'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
-                                'no_hp' => $this->request->getPost('no_hp')[$key],
+                                'no_telp' => $this->request->getPost('no_hp')[$key],
                                 'alamat' => $this->request->getPost('alamat')[$key],
                                 'id_posisi' => $this->request->getPost('posisi')[$key],
                                 'id_tim' => 1,
@@ -138,8 +138,11 @@ class Pemain extends BaseController
                             ));
                             $pathIMG = WRITEPATH . 'uploads/img/' . $filesold;
                             $pathTHUMBS = WRITEPATH . 'uploads/thumbs/' . $filesold;
-                            if (file_exists($pathIMG) && file_exists($pathTHUMBS)) {
+                            if (file_exists($pathIMG) && $filesold !== '') {
                                 unlink($pathIMG);
+                            }
+
+                            if (file_exists($pathTHUMBS && $filesold !== '')) {
                                 unlink($pathTHUMBS);
                             }
                         }

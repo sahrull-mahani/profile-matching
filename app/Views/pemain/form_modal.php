@@ -31,10 +31,24 @@
                 contentType: false,
                 success: function(response) {
                     var data = $.parseJSON(response);
-                    Lobibox.notify(data.type, {
-                        position: 'top right',
-                        msg: data.text
-                    });
+                    if (data.type === 'success') {
+                        Lobibox.notify(data.type, {
+                            position: 'top right',
+                            msg: data.text
+                        })
+                    }else if (data.type === 'error') {
+                        Lobibox.notify(data.type, {
+                            position: 'top right',
+                            msg: data.text
+                        })
+                    } else {
+                        $.each(data.text, function(i, val) {
+                            Lobibox.notify(data.type, {
+                                position: 'top right',
+                                msg: i + ' : ' + val
+                            });
+                        })
+                    }
                     $('#modal_content').modal('hide');
                     $('#table').bootstrapTable('refresh');
                 },

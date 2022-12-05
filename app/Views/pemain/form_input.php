@@ -40,13 +40,13 @@
 <div class="form-group row mode2">
     <label for="no_hp" class="col-sm-3 col-form-label">No Handphone</label>
     <div class="col-sm-9 item">
-        <input type="text" class="form-control" id="no_hp" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" maxlength="15" name="no_hp[]" value="<?= @$get->no_hp ?>" placeholder="08xxxxx" required />
+        <input type="text" class="form-control" id="no_hp" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" maxlength="15" name="no_telp[]" value="<?= @$get->no_telp ?>" placeholder="08xxxxx" required />
     </div>
 </div>
 <div class="form-group row mode2">
     <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
     <div class="col-sm-9 item">
-        <input type="text" class="form-control" id="alamat" name="alamat[]" value="<?= @$get->no_hp ?>" placeholder="Contoh : Jln. Rajawali No. 120" required />
+        <input type="text" class="form-control" id="alamat" name="alamat[]" value="<?= @$get->alamat ?>" placeholder="Contoh : Jln. Rajawali No. 120" required />
     </div>
 </div>
 <div class="form-group row mode2">
