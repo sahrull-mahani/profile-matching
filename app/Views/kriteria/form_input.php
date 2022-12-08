@@ -12,6 +12,30 @@
         </select>
     </div>
 </div>
+<?php if (is_admin()) : ?>
+    <div class="form-group row mode2">
+        <label for="id_tim" class="col-sm-3 col-form-label">TIM</label>
+        <div class="col-sm-9 item">
+            <select class="custom-select" id="id_tim" name="id_tim[]">
+                <option selected disabled>Pilih Tim...</option>
+                <?php foreach ($tim as $row) : ?>
+                    <option value="<?= $row->id ?>" <?= (isset($get->id_tim)) ? ($get->id_tim == $row->id ? 'selected' : '') : ''; ?>><?= $row->nama ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+<?php endif ?>
+<div class="form-group row mode2">
+    <label for="id_posisi" class="col-sm-3 col-form-label">Posisi</label>
+    <div class="col-sm-9 item">
+        <select class="custom-select" id="id_posisi" name="id_posisi[]">
+            <option selected disabled>Pilih Posisi...</option>
+            <?php foreach ($posisi as $row) : ?>
+                <option value="<?= $row->id ?>" <?= (isset($get->id_posisi)) ? ($get->id_posisi == $row->id ? 'selected' : '') : ''; ?>><?= $row->nama_posisi ?></option>
+            <?php endforeach ?>
+        </select>
+    </div>
+</div>
 <div class="form-group row mode2">
     <label for="kriteria_penilaian" class="col-sm-3 col-form-label">Kriteria Penilaian</label>
     <div class="col-sm-9 item">

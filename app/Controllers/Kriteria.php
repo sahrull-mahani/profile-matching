@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\AspekM;
 use App\Models\KriteriaM;
+use App\Models\PosisiM;
+use App\Models\TimM;
 
 class Kriteria extends BaseController
 {
@@ -12,6 +14,8 @@ class Kriteria extends BaseController
     {
         $this->kriteriam = new KriteriaM();
         $this->aspekm = new AspekM();
+        $this->timm = new TimM();
+        $this->posisim = new PosisiM();
     }
     public function index()
     {
@@ -30,6 +34,8 @@ class Kriteria extends BaseController
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['id_aspek'] = $rows->aspek_penilaian;
+            $row['tim'] = $rows->nama;
+            $row['posisi'] = $rows->nama_posisi;
             $row['kriteria_penilaian'] = $rows->kriteria_penilaian;
             $row['target'] = $rows->target;
             $row['type'] = $rows->type;
@@ -49,6 +55,8 @@ class Kriteria extends BaseController
         for ($x = 1; $x <= $num_of_row; $x++) {
             $data['nama'] = 'Data ' . $x;
             $data['aspek'] = $this->aspekm->findAll();
+            $data['tim'] = $this->timm->findAll();
+            $data['posisi'] = $this->posisim->findAll();
             $this->data['form_input'][] = view('App\Views\kriteria\form_input', $data);
         }
         $status['html']         = view('App\Views\kriteria\form_modal', $this->data);
@@ -65,7 +73,9 @@ class Kriteria extends BaseController
             $data = array(
                 'nama' => '<b>' . $get->kriteria_penilaian . '</b>',
                 'get' => $get,
-                'aspek' => $this->aspekm->findAll()
+                'aspek' => $this->aspekm->findAll(),
+                'tim' => $this->timm->findAll(),
+                'posisi' => $this->posisim->findAll(),
             );
             $this->data['form_input'][] = view('App\Views\kriteria\form_input', $data);
         }
@@ -83,6 +93,8 @@ class Kriteria extends BaseController
                 foreach ($nama as $key => $val) {
                     array_push($data, array(
                         'id_aspek' => $this->request->getPost('id_aspek')[$key],
+                        'id_tim' => is_admin() ? $this->request->getPost('id_tim')[$key] : getTimById(session('userlevel'), session('user_id'))->id,
+                        'id_posisi' => $this->request->getPost('id_posisi')[$key],
                         'kriteria_penilaian' => $this->request->getPost('kriteria_penilaian')[$key],
                         'target' => $this->request->getPost('target')[$key],
                         'type' => $this->request->getPost('type')[$key],
@@ -104,6 +116,8 @@ class Kriteria extends BaseController
                     array_push($data, array(
                         'id' => $val,
                         'id_aspek' => $this->request->getPost('id_aspek')[$key],
+                        'id_tim' => is_admin() ? $this->request->getPost('id_tim')[$key] : getTimById(session('userlevel'), session('user_id'))->id,
+                        'id_posisi' => $this->request->getPost('id_posisi')[$key],
                         'kriteria_penilaian' => $this->request->getPost('kriteria_penilaian')[$key],
                         'target' => $this->request->getPost('target')[$key],
                         'type' => $this->request->getPost('type')[$key],

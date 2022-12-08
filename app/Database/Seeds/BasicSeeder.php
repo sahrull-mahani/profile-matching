@@ -58,5 +58,44 @@ class BasicSeeder extends Seeder
 			'group_id' => '1',
 		];
 		$this->db->table($tables['users_groups'])->insert($userGroup);
+
+		$nilaiBobots = [
+            [
+                'selisih'       => 0,
+                'bobot_nilai'   => 4,
+                'ket'           => 'tidak ada selisih (kompetensi sesuai yang dibutuhkan)',
+            ],
+            [
+                'selisih'       => 1,
+                'bobot_nilai'   => 3.5,
+                'ket'           => 'kompetensi individu kelebihan 1 tingkat/level',
+            ],
+            [
+                'selisih'       => -1,
+                'bobot_nilai'   => 3,
+                'ket'           => 'kompetensi individu kekurangan 1 tingkat/level',
+            ],
+            [
+                'selisih'       => 2,
+                'bobot_nilai'   => 2.5,
+                'ket'           => 'kompetensi individu kelebihan 2 tingkat/level',
+            ],
+            [
+                'selisih'       => -2,
+                'bobot_nilai'   => 2,
+                'ket'           => 'kompetensi individu kekurangan 2 tingkat/level',
+            ],
+            [
+                'selisih'       => 3,
+                'bobot_nilai'   => 1.5,
+                'ket'           => 'kompetensi individu kelebihan 3 tingkat/level',
+            ],
+            [
+                'selisih'       => -3,
+                'bobot_nilai'   => 1,
+                'ket'           => 'kompetensi individu kekurangan 3 tingkat/level',
+            ],
+        ];
+        $this->db->table('nilai_bobot')->insertBatch($nilaiBobots);
 	}
 }

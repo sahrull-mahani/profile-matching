@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class KriteriaM extends Model
 {
     protected $table = 'kriteria';
-    protected $allowedFields = array('id_aspek', 'kriteria_penilaian', 'target', 'type');
+    protected $allowedFields = array('id_aspek', 'id_tim', 'id_posisi', 'kriteria_penilaian', 'target', 'type');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -18,6 +18,8 @@ class KriteriaM extends Model
 
     protected $validationRules = [
         'id_aspek' => 'required|max_length[11]',
+        'id_tim' => 'required|max_length[11]',
+        'id_posisi' => 'required|max_length[11]',
         'kriteria_penilaian' => 'required|max_length[150]',
         'target' => 'required|max_length[11]',
         'type' => 'required|max_length[9]',
@@ -25,6 +27,8 @@ class KriteriaM extends Model
 
     protected $validationMessages = [
         'id_aspek' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
+        'id_tim' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
+        'id_posisi' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
         'kriteria_penilaian' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 150 Karakter'],
         'target' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 11 Karakter'],
         'type' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 9 Karakter'],
@@ -52,8 +56,15 @@ class KriteriaM extends Model
             $this->orderBy('id', 'asc');
         }
 
-        $this->select('kriteria.*, a.aspek_penilaian');
+        $this->select('kriteria.*, a.aspek_penilaian, tim.nama, posisi.nama_posisi');
+        if (!is_admin()) {
+            $this->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id);
+        }
         $this->join('aspek a', 'a.id = kriteria.id_aspek');
+        $this->join('tim', 'tim.id = kriteria.id_tim');
+        $this->join('posisi', 'posisi.id = kriteria.id_posisi');
+        $this->orderBy('id_tim', 'asc');
+        $this->orderBy('id_posisi', 'asc');
     }
     public function get_datatables()
     {
