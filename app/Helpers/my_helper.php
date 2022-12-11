@@ -178,3 +178,15 @@ function getKriteriaById($id) {
     $db = db_connect();
     return $db->table('kriteria')->where('id', $id)->get()->getRow();
 }
+
+function getIdPemainByPosisi($posisi) {
+    $db = db_connect();
+    $result = $db->table('pemain')->where('id_posisi', $posisi)->get()->getResult();
+    if (count($result) == 0) {
+        return [null];
+    }
+    foreach ($result as $row) {
+        $ids[] = $row->id;
+    }
+    return $ids;
+}

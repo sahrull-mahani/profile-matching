@@ -105,6 +105,7 @@ class Hitung_cf_sf_nt extends Model
         $this->join('posisi po', 'po.id = hitung_cf_sf_nt.posisi');
         $this->groupBy('id_pemain');
         $this->orderBy('hasil', 'DESC');
+        $this->where('hitung_cf_sf_nt.posisi', $_GET['posisi']);
     }
     public function get_datatables_hasil()
     {

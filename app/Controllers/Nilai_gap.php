@@ -67,20 +67,6 @@ class Nilai_gap extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $rows) {
-            switch ($rows->nilai_kriteria) {
-                case 1:
-                    $nilai = 'Buruk';
-                    break;
-                case 2:
-                    $nilai = 'Cukup';
-                    break;
-                case 3:
-                    $nilai = 'Baik';
-                    break;
-                case 4:
-                    $nilai = 'Sangat Baik';
-                    break;
-            }
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;

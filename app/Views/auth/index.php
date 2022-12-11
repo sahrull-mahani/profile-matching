@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <div id="toolbar">
                                     <!-- <input type="number" class="btn  btn-default" value="1" id="number-of-row"> -->
-                                    <button type="button" class="btn btn-primary create" method="groups" data-toggle="modal"><i class="fa fa-users"></i> Groups</button>
+                                    <!-- <button type="button" class="btn btn-primary create" method="groups" data-toggle="modal"><i class="fa fa-users"></i> Groups</button> -->
                                     <button type="button" class="btn btn-primary create" method="create_user""><i class=" fa fa-plus"></i> <?= lang('Auth.index_create_user_link'); ?></button>
                                     <button type="button" class="btn btn-warning single-edit" method="edit_user" disabled><i class="fa fa-edit"></i> <?= lang('Auth.edit_user_heading'); ?></button>
                                     <button type="button" class="btn btn-danger" id="remove" disabled><i class="fa fa-trash"></i> Hapus</button>

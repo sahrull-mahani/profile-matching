@@ -65,6 +65,10 @@ function ajaxNilaiAkhir(params) {
         params.success(JSON.parse(res))
     })
 }
+function NAkhir(params) {
+    params.posisi = $('#NAposisi').val();
+    return params;
+}
 
 function cetak_dh(url) {
     var url = url + '/' + $('#pegawai').val() + '/' + $('#bulan').val();

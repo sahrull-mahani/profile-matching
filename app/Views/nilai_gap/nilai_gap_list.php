@@ -50,14 +50,14 @@
 
                 <div class="col-12">
                     <div class="card card-primary">
-                        <div class="card-header">                            
+                        <div class="card-header">
                             <h3 class="card-title">Konversi Nilai Bobot</h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="table" data-toggle="table" data-ajax="ajaxNilaiBobot" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar">
+                            <table id="table1" data-toggle="table" data-ajax="ajaxNilaiBobot" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar1">
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-visible="false">ID</th>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="table" data-toggle="table" data-ajax="ajaxNilaiCfSF" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar">
+                            <table id="table2" data-toggle="table" data-ajax="ajaxNilaiCfSF" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar2">
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-visible="false">ID</th>
@@ -109,7 +109,14 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="table" data-toggle="table" data-ajax="ajaxNilaiAkhir" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar">
+                            <div id="toolbar">
+                                <select id="NAposisi" class="btn btn-primary">
+                                    <?php foreach ($posisi as $row) : ?>
+                                        <option value="<?= $row->id ?>"><?= ucwords($row->nama_posisi) ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <table id="table" data-toggle="table" data-ajax="ajaxNilaiAkhir" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar" data-query-params="NAkhir">
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-visible="false">ID</th>
