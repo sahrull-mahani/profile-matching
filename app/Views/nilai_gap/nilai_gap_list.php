@@ -23,6 +23,23 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            Action
+                        </div>
+                        <div class="card-body">
+                            <?php if (count($action) > 0) : ?>
+                                <?php foreach ($action as $key => $row) : ?>
+                                    <a href="<?= site_url("nilai_gap/recount/$row->aspek_id/$row->posisi_id") ?>" class="btn btn-danger my-1 hitung-ulang">Hitung Ulang <?= ucwords($row->aspek_penilaian) . " [$row->nama_posisi]" ?></a>
+                                <?php endforeach ?>
+                            <?php else : ?>
+                                <h6>Data Belum Diisi!</h6>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
                             <div class="row">
                                 <div class="col-md-6">
                                     <select id="posisi" class="custom-select custom-select-sm">

@@ -30,7 +30,7 @@ class Nilai_gap extends BaseController
             'breadcome' => 'Profile Matching',
             'url' => 'nilai_gap/',
             'm_nilai_gap' => 'active',
-            'session' => $this->session,
+            'action' => !is_admin() ? $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->where('id_pelatih', session('user_id'))->groupBy('aspek, posisi')->orderBy('posisi')->findAll() : [],
             'posisi' => $this->posisim->findALl(),
             'aspek' => $this->aspekm->select('aspek.*')->findAll(),
             'nilaiCfSf' => $this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
@@ -241,7 +241,7 @@ class Nilai_gap extends BaseController
         $exp = explode('&', $data);
         $hasil = [];
         $hasil2 = [];
-        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_pelatih', session('user_id'))->countAllResults() > 0) {
+        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_posisi', $id_posisi)->where('id_pelatih', session('user_id'))->countAllResults() > 0) {
             $status['title'] = 'gagal';
             $status['type'] = 'error';
             $status['text'] = '<strong>Oh snap!</strong> Aspek sudah terdaftar.';
@@ -257,6 +257,7 @@ class Nilai_gap extends BaseController
             array_push($hasil, [
                 'id_aspek' => $id_aspek,
                 'id_kriteria' => $valKriteria[1],
+                'id_posisi' => $id_posisi,
                 'id_pemain' => end($valKriteria),
                 'id_pelatih' => session('user_id'),
                 'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target
@@ -290,6 +291,30 @@ class Nilai_gap extends BaseController
             $status['title'] = 'gagal';
             $status['type'] = 'error';
             $status['text'] = '<strong>Oh snap!</strong> Proses gagal.';
+        }
+        return json_encode($status);
+    }
+
+    public function recount($aspekID, $posisiID)
+    {
+        $cfsf = $this->hitungCfSfM->select('hitung_cf_sf_nt.id')->join('nilai_gap n', 'n.id_aspek = hitung_cf_sf_nt.aspek')->where(['posisi' => $posisiID, 'aspek' => $aspekID, 'n.id_pelatih' => session('user_id')])->groupBy('hitung_cf_sf_nt.id')->findAll();
+        $gap = $this->nilai_gapm->where(['id_posisi' => $posisiID, 'id_aspek' => $aspekID, 'id_pelatih' => session('user_id')])->findAll();
+        foreach ($cfsf as $row) {
+            $ids[] = $row->id;
+        }
+        foreach ($gap as $row) {
+            $ids2[] = $row->id;
+        }
+        $dhit = $this->hitungCfSfM->whereIn('id', $ids)->delete();
+        $dgap = $this->nilai_gapm->whereIn('id', $ids2)->delete();
+        if ($dhit && $dgap) {
+            $status['title'] = 'success';
+            $status['type'] = 'success';
+            $status['text'] = '<strong>Done..!</strong>Berhasil menghapus';
+        }else{
+            $status['title'] = 'error';
+            $status['type'] = 'error';
+            $status['text'] = '<strong>Failde..!</strong>Gagal menghapus';
         }
         return json_encode($status);
     }

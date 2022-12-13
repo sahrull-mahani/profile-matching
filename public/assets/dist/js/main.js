@@ -6,34 +6,52 @@ $(document).ready(function () {
     $.ajaxSetup({ data: ace })
 
     $('#aspek').hide()
-    $('#posisi').on('change', function() {
+    $('#posisi').on('change', function () {
         let val = $(this).val()
         let valAspek = $('#aspek').val()
-        if(val != null) {
+        if (val != null) {
             $('#aspek').show()
         }
         $.ajax({
             url: location.origin + '/Nilai_gap/dataGap',
-            data: {value : valAspek, posisi: val},
+            data: { value: valAspek, posisi: val },
             type: 'post',
-            success: function(res) {
+            success: function (res) {
                 let data = $.parseJSON(res)
                 $('#data-gap').html(data.nilai)
             }
         })
     })
-    $('#aspek').on('change', function() {
+    $('#aspek').on('change', function () {
         let val = $(this).val()
         let valPosisi = $('#posisi').val()
         $.ajax({
             url: location.origin + '/Nilai_gap/dataGap',
-            data: {value : val, posisi: valPosisi},
+            data: { value: val, posisi: valPosisi },
             type: 'post',
-            success: function(res) {
+            success: function (res) {
                 let data = $.parseJSON(res)
                 $('#data-gap').html(data.nilai)
             }
         })
+    })
+})
+
+$('.hitung-ulang').on('click', function (e) {
+    e.preventDefault()
+    let href = $(this).attr('href')
+    $.get({
+        url: href,
+        dataType: 'json',
+        success: function (res) {
+            Swal.fire({
+                title: res.title,
+                html: res.text,
+                icon: res.type
+            }).then((result) => {
+                window.location.replace(window.location.href)
+            })
+        }
     })
 })
 
@@ -343,7 +361,7 @@ function readFile(url) {
                                     msg: data.text
                                 })
                             } else {
-                                $.each(data.text, function(i, val) {
+                                $.each(data.text, function (i, val) {
                                     Lobibox.notify(data.type, {
                                         position: 'top right',
                                         msg: i + ' : ' + val
@@ -351,7 +369,7 @@ function readFile(url) {
                                 })
                             }
                             $('#table').bootstrapTable('refresh');
-                        },error: function (jqXHR, exception, thrownError) {
+                        }, error: function (jqXHR, exception, thrownError) {
                             ajax_error_handling(jqXHR, exception, thrownError);
                         }
                     });

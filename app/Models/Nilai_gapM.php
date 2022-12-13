@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Nilai_gapM extends Model
 {
     protected $table = 'nilai_gap';
-    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_pemain', 'id_pelatih', 'nilai_kriteria');
+    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_posisi', 'id_pemain', 'id_pelatih', 'nilai_kriteria');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
