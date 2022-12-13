@@ -73,7 +73,7 @@ class Nilai_gapM extends Model
 
     private function _get_datatables_bobot()
     {
-        $column_search = array('nama', 'aspek_penilaian');
+        $column_search = array('nama', 'aspek_penilaian', 'kriteria_penilaian');
         $i = 0;
         foreach ($column_search as $item) { // loop column 
             if ($_GET['search']) {

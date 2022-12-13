@@ -30,7 +30,7 @@ class Hitung_cf_sf_nt extends Model
 
     private function _get_datatables()
     {
-        $column_search = array('id_pemain', 'aspek', 'core', 'second', 'total');
+        $column_search = array('p.nama', 'aspek_penilaian', 'hitung_cf_sf_nt.core', 'hitung_cf_sf_nt.second', 'hitung_cf_sf_nt.total');
         $i = 0;
         foreach ($column_search as $item) { // loop column 
             if ($_GET['search']) {
@@ -75,7 +75,7 @@ class Hitung_cf_sf_nt extends Model
 
     private function _get_datatables_hasil()
     {
-        $column_search = array('id_pemain', 'aspek', 'posisi', 'core', 'second', 'total');
+        $column_search = array('nama', 'aspek_penilaian', 'nama_posisi', 'hitung_cf_sf_nt.core', 'hitung_cf_sf_nt.second', 'hitung_cf_sf_nt.total');
         $i = 0;
         foreach ($column_search as $item) { // loop column 
             if ($_GET['search']) {

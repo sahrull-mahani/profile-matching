@@ -119,11 +119,11 @@ class AllSeeder extends Seeder
                 'group_id' => '2',
             ],
             [
-                'user_id'  => '3',
+                'user_id'  => '4',
                 'group_id' => '3',
             ],
             [
-                'user_id'  => '4',
+                'user_id'  => '5',
                 'group_id' => '3',
             ],
         ];
@@ -160,6 +160,8 @@ class AllSeeder extends Seeder
         $kriterias = [
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'akselerasi',
                 'target'                => 4,
                 'type'                  => 'core', 
@@ -168,6 +170,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'aggression',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -176,6 +180,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'agility',
                 'target'                => 3,
                 'type'                  => 'secondary', 
@@ -184,6 +190,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'attacking position',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -192,6 +200,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'awareness',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -200,6 +210,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'balance',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -208,6 +220,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'ball controll',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -216,6 +230,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'composure',
                 'target'                => 1,
                 'type'                  => 'secondary', 
@@ -224,6 +240,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'crossing',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -232,6 +250,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'curve',
                 'target'                => 4,
                 'type'                  => 'core', 
@@ -240,6 +260,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'defending',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -248,6 +270,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'dribbling',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -256,6 +280,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'finishing',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -264,6 +290,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'free kick',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -272,6 +300,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'heading',
                 'target'                => 4,
                 'type'                  => 'core', 
@@ -280,6 +310,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'interceptions',
                 'target'                => 2,
                 'type'                  => 'secondary', 
@@ -288,6 +320,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'jumping',
                 'target'                => 2,
                 'type'                  => 'secondary', 
@@ -296,6 +330,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'long passing',
                 'target'                => 3,
                 'type'                  => 'secondary', 
@@ -304,6 +340,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'long shot',
                 'target'                => 4,
                 'type'                  => 'secondary', 
@@ -312,6 +350,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'marking',
                 'target'                => 2,
                 'type'                  => 'secondary', 
@@ -320,6 +360,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'overall rating',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -328,6 +370,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'pace',
                 'target'                => 3,
                 'type'                  => 'secondary', 
@@ -336,6 +380,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'passing',
                 'target'                => 3,
                 'type'                  => 'core', 
@@ -344,6 +390,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'pinalti',
                 'target'                => 2,
                 'type'                  => 'secondary', 
@@ -352,6 +400,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'fisik',
                 'target'                => 4,
                 'type'                  => 'secondary', 
@@ -360,6 +410,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 2,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'positioning',
                 'target'                => 2,
                 'type'                  => 'core', 
@@ -368,6 +420,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 1,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'reaction',
                 'target'                => 2,
                 'type'                  => 'secondary', 
@@ -376,6 +430,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'shooting',
                 'target'                => 1,
                 'type'                  => 'core', 
@@ -384,6 +440,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'short pass',
                 'target'                => 4,
                 'type'                  => 'core', 
@@ -392,6 +450,8 @@ class AllSeeder extends Seeder
             ],
             [
                 'id_aspek'              => 3,
+                'id_tim'                => rand(1,2),
+                'id_posisi'             => 1,
                 'kriteria_penilaian'    => 'shot power',
                 'target'                => 4,
                 'type'                  => 'core', 
