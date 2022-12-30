@@ -48,8 +48,8 @@
                                         <th data-field="nomor">No</th>
                                         <?php if (is_admin()) : ?>
                                             <th data-field="tim">TIM</th>
-                                            <th data-field="posisi">Posisi</th>
                                         <?php endif ?>
+                                        <th data-field="posisi">Posisi</th>
                                         <th data-field="id_aspek">Aspek Penilaian</th>
                                         <th data-field="kriteria_penilaian">Kriteria Penilaian</th>
                                         <th data-field="target">Standar</th>

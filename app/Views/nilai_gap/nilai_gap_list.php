@@ -45,6 +45,7 @@
                         <div class="card-body">
                             <?php if (count($action) > 0) : ?>
                                 <?php foreach ($action as $key => $row) : ?>
+                                    <?php if ($key > 0) break ?>
                                     <a href="<?= site_url('/nilai_gap/truncate_count') ?>" class="btn btn-danger my-1 hitung-ulang">Hitung Ulang<?= is_admin() ? ' [' . getTimById('pelatih', $row->id_pelatih)->nama . ']' : '' ?></a>
                                 <?php endforeach ?>
                             <?php else : ?>

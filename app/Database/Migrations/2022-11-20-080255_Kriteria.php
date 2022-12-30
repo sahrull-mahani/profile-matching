@@ -22,8 +22,8 @@ class Kriteria extends Migration
         ]);        
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('id_tim', 'aspek', 'id', 'CASCADE', 'NO ACTION');
-        $this->forge->addForeignKey('id_posisi', 'aspek', 'id', 'CASCADE', 'NO ACTION');
-        $this->forge->addForeignKey('id_aspek', 'aspek', 'id', 'CASCADE', 'NO ACTION');
+        $this->forge->addForeignKey('id_posisi', 'posisi', 'id', 'CASCADE', 'NO ACTION');
+        $this->forge->addForeignKey('id_aspek', 'tim', 'id', 'CASCADE', 'NO ACTION');
         $this->forge->createTable('kriteria', true);
     }
 
