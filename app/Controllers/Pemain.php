@@ -130,7 +130,7 @@ class Pemain extends BaseController
                                 'id' => $val,
                                 'nama' => $this->request->getPost('nama')[$key],
                                 'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
-                                'no_telp' => $this->request->getPost('no_hp')[$key],
+                                'no_telp' => $this->request->getPost('no_telp')[$key],
                                 'alamat' => $this->request->getPost('alamat')[$key],
                                 'id_posisi' => $this->request->getPost('posisi')[$key],
                                 'id_tim' => 1,
@@ -151,7 +151,7 @@ class Pemain extends BaseController
                             'id' => $val,
                             'nama' => $this->request->getPost('nama')[$key],
                             'ttl' => get_format_date_sql($this->request->getPost('ttl')[$key]),
-                            'no_hp' => $this->request->getPost('no_hp')[$key],
+                            'no_telp' => $this->request->getPost('no_telp')[$key],
                             'alamat' => $this->request->getPost('alamat')[$key],
                             'foto' => $filesold,
                         ]);
