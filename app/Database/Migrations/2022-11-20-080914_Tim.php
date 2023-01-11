@@ -22,8 +22,8 @@ class Tim extends Migration
 			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],
         ]);        
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('pelatih', 'users', 'id', 'CASCADE', 'NO ACTION');
-        $this->forge->addForeignKey('manager', 'users', 'id', 'CASCADE', 'NO ACTION');
+        // $this->forge->addForeignKey('pelatih', 'users', 'id', 'CASCADE', 'NO ACTION');
+        // $this->forge->addForeignKey('manager', 'users', 'id', 'CASCADE', 'NO ACTION');
         $this->forge->createTable('tim', true);
     }
 

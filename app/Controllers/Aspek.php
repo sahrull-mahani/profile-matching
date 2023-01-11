@@ -3,13 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\AspekM;
+use App\Models\KriteriaM;
 
 class Aspek extends BaseController
 {
     protected $aspekm;
+    protected $kriteriam;
     function __construct()
     {
         $this->aspekm = new AspekM();
+        $this->kriteriam = new KriteriaM();
     }
     public function index()
     {
@@ -115,7 +118,11 @@ class Aspek extends BaseController
                 echo json_encode($status);
                 break;
             case 'delete':
-                if ($this->aspekm->delete($this->request->getPost('id'))) {
+                $idaspek = $this->request->getPost('id');
+                if (is_admin()) {
+                    $this->kriteriam->where('id_aspek', $idaspek)->delete();
+                }
+                if ($this->aspekm->where('id', $idaspek)->delete()) {
                     $status['type'] = 'success';
                     $status['text'] = '<strong>Deleted..!</strong>Berhasil dihapus';
                 } else {

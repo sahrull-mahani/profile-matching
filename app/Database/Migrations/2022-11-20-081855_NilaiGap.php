@@ -21,11 +21,11 @@ class NilaiGap extends Migration
 			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],
         ]);        
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('id_aspek', 'aspek', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('id_kriteria', 'kriteria', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('id_posisi', 'posisi', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('id_pemain', 'pemain', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('id_pelatih', 'users', 'id', 'RESTRICT', 'RESTRICT');
+        // $this->forge->addForeignKey('id_aspek', 'aspek', 'id', 'RESTRICT', 'CASCADE');
+        // $this->forge->addForeignKey('id_kriteria', 'kriteria', 'id', 'RESTRICT', 'CASCADE');
+        // $this->forge->addForeignKey('id_posisi', 'posisi', 'id', 'RESTRICT', 'CASCADE');
+        // $this->forge->addForeignKey('id_pemain', 'pemain', 'id', 'RESTRICT', 'CASCADE');
+        // $this->forge->addForeignKey('id_pelatih', 'users', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('nilai_gap', true);
     }
 
