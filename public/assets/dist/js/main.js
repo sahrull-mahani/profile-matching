@@ -83,6 +83,11 @@ function ajaxNilaiAkhir(params) {
         params.success(JSON.parse(res))
     })
 }
+function ajaxPenentuPosisi(params) {
+    $.get(url + 'ajax_penentu_posisi?' + $.param(params.data)).then(function (res) {
+        params.success(JSON.parse(res))
+    })
+}
 function NAkhir(params) {
     params.posisi = $('#NAposisi').val();
     return params;

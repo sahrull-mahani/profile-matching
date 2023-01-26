@@ -117,6 +117,53 @@ class Nilai_gapM extends Model
         }
         return $this->get()->getNumRows();
     }
+
+    private function _get_datatables_penentu_posisi()
+    {
+        $column_search = array('nama', 'posisi');
+        $i = 0;
+        foreach ($column_search as $item) { // loop column 
+            if ($_GET['search']) {
+                if ($i === 0) {
+                    $this->groupStart();
+                    $this->like($item, $_GET['search']);
+                } else {
+                    $this->orLike($item, $_GET['search']);
+                }
+                if (count($column_search) - 1 == $i)
+                    $this->groupEnd();
+            }
+            $i++;
+        }
+        if (isset($_GET['order'])) {
+            $this->orderBy($_GET['sort'], $_GET['order']);
+        } else {
+            $this->orderBy('id', 'asc');
+        }
+
+        $this->orderBy('total', 'ASC');
+        $this->select('nilai_gap.id, nama, p.nama_posisi');
+        $this->selectSum('nilai_gap.nilai_kriteria', 'total');
+        $this->join('pemain pem', 'pem.id = nilai_gap.id_pemain');
+        $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
+        $this->join('posisi p', 'p.id = k.id_posisi');
+        $this->groupBy('k.id_posisi');
+    }
+    public function get_datatables_penentu_posisi()
+    {
+        $this->_get_datatables_penentu_posisi();
+        $limit = isset($_GET['limit']) ? $_GET['limit'] : 0;
+        $offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+        return $this->findAll($limit, $offset);
+    }
+    public function total_penentu_posisi()
+    {
+        $this->_get_datatables_penentu_posisi();
+        if ($this->tempUseSoftDeletes) {
+            $this->where($this->table . '.' . $this->deletedField, null);
+        }
+        return $this->get()->getNumRows();
+    }
 }
 /* End of file Nilai_gapM.php */
 /* Location: ./app/models/Nilai_gapM.php */

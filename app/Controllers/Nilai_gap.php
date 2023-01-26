@@ -129,6 +129,26 @@ class Nilai_gap extends BaseController
         );
         echo json_encode($output);
     }
+    public function ajax_penentu_posisi()
+    {
+        $list = $this->nilai_gapm->get_datatables_penentu_posisi();
+        $data = array();
+        $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
+        foreach ($list as $rows) {
+            $row = array();
+            $row['id'] = $rows->id;
+            $row['nomor'] = $no++;
+            $row['id_pemain'] = ucwords($rows->nama);
+            $row['posisi'] = strtoupper($rows->nama_posisi);
+            $data[] = $row;
+        }
+        $output = array(
+            "total" => $this->nilai_gapm->total_penentu_posisi(),
+            "totalNotFiltered" => $this->nilai_gapm->countAllResults(),
+            "rows" => $data,
+        );
+        echo json_encode($output);
+    }
     public function create()
     {
         $this->data = array('action' => 'insert', 'btn' => '<i class="fas fa-save"></i> Save');
@@ -222,7 +242,7 @@ class Nilai_gap extends BaseController
     {
         $aspek = $this->request->getVar('value');
         $posisi = $this->request->getVar('posisi');
-        $kriteria = $this->kriteriam->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
+        $kriteria = $this->kriteriam->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
         $pemain = $this->pemainm->where('id_tim', getTimById('pelatih', session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
         $data = [
             'kriteria'  => $kriteria,

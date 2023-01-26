@@ -166,6 +166,29 @@
                     </div>
                 </div>
 
+                <div class="col-12">
+                    <div class="card card-success collapsed-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Penentu Posisi</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="table" data-toggle="table" data-ajax="ajaxPenentuPosisi" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbarPenentuPosisi">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false">ID</th>
+                                        <th data-field="nomor">No</th>
+                                        <th data-field="id_pemain">Pemain</th>
+                                        <th data-field="posisi">Posisi</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
