@@ -93,6 +93,14 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<?= site_url('/recycle'); ?>" class="nav-link <?= isset($m_recycle) ? $m_recycle : ''; ?>">
+                            <i class="nav-icon fa fa-trash-alt"></i>
+                            <p>
+                                Recycle
+                            </p>
+                        </a>
+                    </li>
                 <?php endif ?>
                 <?php if (is_admin()) : ?>
                     <li class="nav-header">User</li>

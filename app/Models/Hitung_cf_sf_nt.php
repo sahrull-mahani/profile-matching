@@ -7,8 +7,14 @@ use CodeIgniter\Model;
 class Hitung_cf_sf_nt extends Model
 {
     protected $table = 'hitung_cf_sf_nt';
-    protected $allowedFields = array('id_pemain', 'aspek', 'posisi', 'core', 'second', 'total');
+    protected $allowedFields = array('id_pemain', 'aspek', 'posisi', 'core', 'second', 'total', 'deleted_at');
     protected $returnType     = 'object';
+    protected $useSoftDeletes = false;
+
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
     protected $validationRules = [
         'id_pemain' => 'required|max_length[11]',
@@ -27,6 +33,18 @@ class Hitung_cf_sf_nt extends Model
         'second' => ['required' => 'tidak boleh kosong'],
         'total' => ['required' => 'tidak boleh kosong'],
     ];
+
+    public function softDeleteds() {
+        $data = [];
+        foreach ($this->findAll() as $row) {
+            array_push($data, [
+                'id' => $row->id,
+                'deleted_at' => date('Y-m-d')
+            ]);
+        }
+        $this->updateBatch($data, 'id');
+        return true;
+    }
 
     private function _get_datatables()
     {
@@ -56,6 +74,7 @@ class Hitung_cf_sf_nt extends Model
         $this->select('hitung_cf_sf_nt.*, a.aspek_penilaian, p.nama');
         $this->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain');
         $this->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek');
+        $this->where('hitung_cf_sf_nt.deleted_at', NULL);
     }
     public function get_datatables()
     {
@@ -106,6 +125,7 @@ class Hitung_cf_sf_nt extends Model
         $this->groupBy('id_pemain');
         $this->orderBy('hasil', 'DESC');
         $this->where('hitung_cf_sf_nt.posisi', $_GET['posisi']);
+        $this->where('hitung_cf_sf_nt.deleted_at', NULL);
     }
     public function get_datatables_hasil()
     {

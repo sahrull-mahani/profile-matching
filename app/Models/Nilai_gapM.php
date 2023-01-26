@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Nilai_gapM extends Model
 {
     protected $table = 'nilai_gap';
-    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_posisi', 'id_pemain', 'id_pelatih', 'nilai_kriteria');
+    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_posisi', 'id_pemain', 'id_pelatih', 'nilai_kriteria', 'deleted_at');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -31,6 +31,17 @@ class Nilai_gapM extends Model
         'id_pelatih' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 6 Karakter'],
         'nilai_kriteria' => ['required' => 'tidak boleh kosong', 'max_length' => 'Maximal 5 Karakter'],
     ];
+    public function softDeleteds() {
+        $data = [];
+        foreach ($this->findAll() as $row) {
+            array_push($data, [
+                'id' => $row->id,
+                'deleted_at' => date('Y-m-d')
+            ]);
+        }
+        $this->updateBatch($data, 'id');
+        return true;
+    }
     private function _get_datatables()
     {
         $column_search = array('id_aspek', 'id_kriteria', 'id_pemain', 'id_manager', 'nilai_kriteria');
@@ -53,6 +64,7 @@ class Nilai_gapM extends Model
         } else {
             $this->orderBy('id', 'asc');
         }
+        $this->where('nilai_gap.deleted_at', NULL);
     }
     public function get_datatables()
     {
@@ -101,6 +113,7 @@ class Nilai_gapM extends Model
         $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
         $this->join('pemain p', 'p.id = nilai_gap.id_pemain');
         $this->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria');
+        $this->where('nilai_gap.deleted_at', NULL);
     }
     public function get_datatables_bobot()
     {
@@ -141,13 +154,14 @@ class Nilai_gapM extends Model
             $this->orderBy('id', 'asc');
         }
 
-        $this->orderBy('total', 'ASC');
+        $this->orderBy('total', 'DESC');
         $this->select('nilai_gap.id, nama, p.nama_posisi');
         $this->selectSum('nilai_gap.nilai_kriteria', 'total');
         $this->join('pemain pem', 'pem.id = nilai_gap.id_pemain');
         $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
         $this->join('posisi p', 'p.id = k.id_posisi');
-        $this->groupBy('k.id_posisi');
+        $this->groupBy('nilai_gap.id_pemain');
+        $this->where('nilai_gap.deleted_at', NULL);
     }
     public function get_datatables_penentu_posisi()
     {

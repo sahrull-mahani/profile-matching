@@ -12,7 +12,7 @@ use CodeIgniter\Debug\Toolbar\Collectors\Views;
 
 class Nilai_gap extends BaseController
 {
-    protected $nilai_gapm;
+    protected $nilai_gapm, $aspekm, $kriteriam, $pemainm, $hitungCfSfM, $posisim, $data;
     function __construct()
     {
         helper('my_helper');
@@ -30,8 +30,7 @@ class Nilai_gap extends BaseController
             'breadcome' => 'Profile Matching',
             'url' => 'nilai_gap/',
             'm_nilai_gap' => 'active',
-            // 'action' => !is_admin() ? $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->where('id_pelatih', session('user_id'))->groupBy('aspek, posisi')->orderBy('posisi')->findAll() : [],
-            'action' => is_admin() ? $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi, nilai_gap.id_pelatih')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->groupBy('aspek, posisi')->orderBy('posisi')->findAll() : $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->where('id_pelatih', session('user_id'))->groupBy('aspek, posisi')->orderBy('posisi')->findAll(),
+            'action' => is_admin() ? $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi, nilai_gap.id_pelatih')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->groupBy('aspek, posisi')->orderBy('posisi')->findAll() : $this->nilai_gapm->select('a.id as aspek_id, a.aspek_penilaian, p.id as posisi_id, p.nama_posisi')->join('hitung_cf_sf_nt h', 'h.aspek = nilai_gap.id_aspek')->join('aspek a', 'a.id = h.aspek')->join('posisi p', 'p.id = h.posisi')->where('id_pelatih', session('user_id'))->where('nilai_gap.deleted_at', NULL)->groupBy('aspek, posisi')->orderBy('posisi')->findAll(),
             'posisi' => $this->posisim->findALl(),
             'aspek' => $this->aspekm->select('aspek.*')->findAll(),
             'nilaiCfSf' => $this->hitungCfSfM->join('pemain p', 'p.id = hitung_cf_sf_nt.id_pemain')->join('aspek a', 'a.id = hitung_cf_sf_nt.aspek')->findAll()
@@ -318,7 +317,7 @@ class Nilai_gap extends BaseController
 
     public function truncate_count()
     {
-        if ($this->hitungCfSfM->truncate() && $this->nilai_gapm->truncate()) {
+        if ($this->nilai_gapm->softDeleteds() && $this->hitungCfSfM->softDeleteds()) {
             $status['title'] = 'success';
             $status['type'] = 'success';
             $status['text'] = '<strong>Done..!</strong>Berhasil menghapus';
