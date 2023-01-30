@@ -20,10 +20,10 @@
                             <td>
                                 <?= $row->id_posisi ?>
                                 <select class="custom-select nilai" name="<?= "nilai$key" ?>">
-                                    <option value="<?= "1|$row->id|$p->id" ?>">Buruk</option>
-                                    <option value="<?= "2|$row->id|$p->id" ?>">Cukup</option>
-                                    <option value="<?= "3|$row->id|$p->id" ?>">Baik</option>
-                                    <option value="<?= "4|$row->id|$p->id" ?>">Sangat Baik</option>
+                                    <option value="<?= "1|$row->id|$p->id|$row->id_posisi" ?>">Buruk</option>
+                                    <option value="<?= "2|$row->id|$p->id|$row->id_posisi" ?>">Cukup</option>
+                                    <option value="<?= "3|$row->id|$p->id|$row->id_posisi" ?>">Baik</option>
+                                    <option value="<?= "4|$row->id|$p->id|$row->id_posisi" ?>">Sangat Baik</option>
                                 </select>
                             </td>
                         <?php endforeach ?>

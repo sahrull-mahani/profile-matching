@@ -16,6 +16,8 @@ class NilaiGap extends Migration
 			'id_pemain' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'id_pelatih' => ['type' => 'int', 'constraint' => 6, 'unsigned' => true],
 			'nilai_kriteria' => ['type' => 'tinyint', 'constraint' => 3],
+			'hasil' => ['type' => 'tinyint', 'constraint' => 2],
+			'hasilposisi' => ['type' => 'tinyint', 'constraint' => 2],
 			'created_at' => ['type' => 'date', 'constraint' => 0],
 			'updated_at' => ['type' => 'date', 'constraint' => 0],
 			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],

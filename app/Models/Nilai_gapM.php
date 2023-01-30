@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Nilai_gapM extends Model
 {
     protected $table = 'nilai_gap';
-    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_posisi', 'id_pemain', 'id_pelatih', 'nilai_kriteria', 'deleted_at');
+    protected $allowedFields = array('id_aspek', 'id_kriteria', 'id_posisi', 'id_pemain', 'id_pelatih', 'nilai_kriteria', 'hasil', 'hasilposisi', 'deleted_at');
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
@@ -154,13 +154,15 @@ class Nilai_gapM extends Model
             $this->orderBy('id', 'asc');
         }
 
-        $this->orderBy('total', 'DESC');
-        $this->select('nilai_gap.id, nama, p.nama_posisi');
-        $this->selectSum('nilai_gap.nilai_kriteria', 'total');
-        $this->join('pemain pem', 'pem.id = nilai_gap.id_pemain');
-        $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
-        $this->join('posisi p', 'p.id = k.id_posisi');
+        $this->select('nilai_gap.*, p.nama, pos.nama_posisi');
+        $this->selectSum('hasil', 'total');
+        $this->join('pemain p', 'p.id = nilai_gap.id_pemain');
+        $this->join('posisi pos', 'pos.id = nilai_gap.hasilposisi');
         $this->groupBy('nilai_gap.id_pemain');
+        $this->groupBy('nilai_gap.hasilposisi');
+        $this->orderBy('nilai_gap.id_pemain', 'asc');
+        $this->orderBy('total', 'desc');
+        $this->orderBy('nilai_gap.hasilposisi', 'asc');
         $this->where('nilai_gap.deleted_at', NULL);
     }
     public function get_datatables_penentu_posisi()

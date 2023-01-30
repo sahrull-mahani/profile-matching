@@ -16,6 +16,9 @@ class HitungCfSfNt extends Migration
 			'core' => ['type' => 'double'],
 			'second' => ['type' => 'double'],
 			'total' => ['type' => 'double'],
+            'created_at' => ['type' => 'date', 'constraint' => 0],
+			'updated_at' => ['type' => 'date', 'constraint' => 0],
+			'deleted_at' => ['type' => 'date', 'constraint' => 0, 'null' => true],
         ]);        
         $this->forge->addKey('id', true);
         $this->forge->createTable('hitung_cf_sf_nt', true);

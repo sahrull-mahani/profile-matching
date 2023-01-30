@@ -133,10 +133,11 @@ class Nilai_gap extends BaseController
         $list = $this->nilai_gapm->get_datatables_penentu_posisi();
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
-        foreach ($list as $rows) {
+        foreach ($list as $key => $rows) {
+            if ($key % 2 == 1) continue;
             $row = array();
             $row['id'] = $rows->id;
-            $row['nomor'] = $no++;
+            $row['nomor'] = $no++ . ' ' . $rows->id_pemain;
             $row['id_pemain'] = ucwords($rows->nama);
             $row['posisi'] = strtoupper($rows->nama_posisi);
             $data[] = $row;
@@ -271,16 +272,18 @@ class Nilai_gap extends BaseController
             $key++;
             $row = explode('=', $row);
             $val[] = end($row);
-
+            
             $valKriteria = explode('%7C', end($row));
-
+            
             array_push($hasil, [
                 'id_aspek' => $id_aspek,
                 'id_kriteria' => $valKriteria[1],
                 'id_posisi' => $id_posisi,
-                'id_pemain' => end($valKriteria),
+                'id_pemain' => $valKriteria[2],
                 'id_pelatih' => session('user_id'),
-                'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target
+                'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target,
+                'hasil' => $valKriteria[0],
+                'hasilposisi' => end($valKriteria),
             ]);
         }
 
@@ -328,28 +331,4 @@ class Nilai_gap extends BaseController
         }
         return json_encode($status);
     }
-
-    // public function recount($aspekID, $posisiID)
-    // {
-    //     $cfsf = $this->hitungCfSfM->select('hitung_cf_sf_nt.id')->join('nilai_gap n', 'n.id_aspek = hitung_cf_sf_nt.aspek')->where(['posisi' => $posisiID, 'aspek' => $aspekID, 'n.id_pelatih' => session('user_id')])->groupBy('hitung_cf_sf_nt.id')->findAll();
-    //     $gap = $this->nilai_gapm->where(['id_posisi' => $posisiID, 'id_aspek' => $aspekID, 'id_pelatih' => session('user_id')])->findAll();
-    //     foreach ($cfsf as $row) {
-    //         $ids[] = $row->id;
-    //     }
-    //     foreach ($gap as $row) {
-    //         $ids2[] = $row->id;
-    //     }
-    //     $dhit = $this->hitungCfSfM->whereIn('id', $ids)->delete();
-    //     $dgap = $this->nilai_gapm->whereIn('id', $ids2)->delete();
-    //     if ($dhit && $dgap) {
-    //         $status['title'] = 'success';
-    //         $status['type'] = 'success';
-    //         $status['text'] = '<strong>Done..!</strong>Berhasil menghapus';
-    //     }else{
-    //         $status['title'] = 'error';
-    //         $status['type'] = 'error';
-    //         $status['text'] = '<strong>Failde..!</strong>Gagal menghapus';
-    //     }
-    //     return json_encode($status);
-    // }
 }
