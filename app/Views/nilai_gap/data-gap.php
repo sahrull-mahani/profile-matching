@@ -18,8 +18,8 @@
                         <td><?= ucwords($p->nama) ?></td>
                         <?php foreach ($kriteria as $key => $row) : ?>
                             <td>
-                                <?= $row->id_posisi ?>
-                                <select class="custom-select nilai" name="<?= "nilai$key" ?>">
+                                <?= $row->nama_posisi ?>
+                                <select class="custom-select nilai" name="<?= "nama_posisi$key" ?>">
                                     <option value="<?= "1|$row->id|$p->id|$row->id_posisi" ?>">Buruk</option>
                                     <option value="<?= "2|$row->id|$p->id|$row->id_posisi" ?>">Cukup</option>
                                     <option value="<?= "3|$row->id|$p->id|$row->id_posisi" ?>">Baik</option>

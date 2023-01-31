@@ -242,7 +242,7 @@ class Nilai_gap extends BaseController
     {
         $aspek = $this->request->getVar('value');
         $posisi = $this->request->getVar('posisi');
-        $kriteria = $this->kriteriam->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
+        $kriteria = $this->kriteriam->select('kriteria.*, p.nama_posisi')->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->join('posisi p', 'p.id = kriteria.id_posisi')->findAll();
         $pemain = $this->pemainm->where('id_tim', getTimById('pelatih', session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
         $data = [
             'kriteria'  => $kriteria,
