@@ -137,7 +137,7 @@ class Nilai_gap extends BaseController
             if ($key % 2 == 1) continue;
             $row = array();
             $row['id'] = $rows->id;
-            $row['nomor'] = $no++ . ' ' . $rows->id_pemain;
+            $row['nomor'] = $no++;
             $row['id_pemain'] = ucwords($rows->nama);
             $row['posisi'] = strtoupper($rows->nama_posisi);
             $data[] = $row;
@@ -262,7 +262,7 @@ class Nilai_gap extends BaseController
         $exp = explode('&', $data);
         $hasil = [];
         $hasil2 = [];
-        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_posisi', $id_posisi)->where('id_pelatih', session('user_id'))->countAllResults() > 0) {
+        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_posisi', $id_posisi)->where('id_pelatih', session('user_id'))->where('deleted_at', null)->countAllResults() > 0) {
             $status['title'] = 'gagal';
             $status['type'] = 'error';
             $status['text'] = '<strong>Oh snap!</strong> Aspek sudah terdaftar.';
