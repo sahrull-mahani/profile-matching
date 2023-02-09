@@ -13,7 +13,14 @@ class Recycle extends BaseController
     }
     public function index()
     {
-        $this->data = array('title' => 'Recycle | Admin', 'breadcome' => 'Recycle', 'url' => 'recycle/', 'm_recycle' => 'active', 'session' => $this->session);
+        $this->data = array(
+            'title' => 'Recycle | Admin',
+            'breadcome' => 'Recycle',
+            'url' => 'recycle/',
+            'm_recycle' => 'active',
+            'session' => $this->session,
+            'del' => $this->recyclem->where('deleted_at !=',null)->findAll()
+        );
 
         echo view('App\Views\recycle\nilai_gap_list', $this->data);
     }

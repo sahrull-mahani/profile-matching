@@ -8,7 +8,6 @@ use App\Models\KriteriaM;
 use App\Models\Nilai_gapM;
 use App\Models\PemainM;
 use App\Models\PosisiM;
-use CodeIgniter\Debug\Toolbar\Collectors\Views;
 
 class Nilai_gap extends BaseController
 {
@@ -134,7 +133,7 @@ class Nilai_gap extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $key => $rows) {
-            if ($key % 2 == 1) continue;
+            // if ($key % 2 == 1) continue;
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
@@ -238,20 +237,98 @@ class Nilai_gap extends BaseController
         }
     }
 
-    public function dataGap()
-    {
-        $aspek = $this->request->getVar('value');
-        $posisi = $this->request->getVar('posisi');
-        $kriteria = $this->kriteriam->select('kriteria.*, p.nama_posisi')->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->join('posisi p', 'p.id = kriteria.id_posisi')->findAll();
-        $pemain = $this->pemainm->where('id_tim', getTimById('pelatih', session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
+    // public function dataGap()
+    // {
+    //     $aspek = $this->request->getVar('value');
+    //     $posisi = $this->request->getVar('posisi');
+    //     $kriteria = $this->kriteriam->select('kriteria.*, p.nama_posisi')->where('id_aspek', $aspek)->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->join('posisi p', 'p.id = kriteria.id_posisi')->findAll();
+    //     $pemain = $this->pemainm->where('id_tim', getTimById('pelatih', session('user_id'))->id)->where('id_posisi', $posisi)->findAll();
+    //     $data = [
+    //         'kriteria'  => $kriteria,
+    //         'pemain'    => $pemain,
+    //         'aspek'     => $aspek,
+    //         'posisi'    => $posisi
+    //     ];
+    //     $html = view('App\Views\nilai_gap\data-gap', $data);
+    //     return json_encode(['nilai' => $html]);
+    // }
+    public function dataGap2()
+    {        
+        if (!is_admin()) {
+            $pemain = $this->pemainm->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
+            $kriteria = $this->kriteriam->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
+        } else {
+            $pemain = $this->pemainm->findAll();
+            $kriteria = $this->kriteriam->findAll();
+        }
+        $cek = $this->nilai_gapm->where('nilai_gap.deleted_at', NULL)->findAll();
+
         $data = [
-            'kriteria'  => $kriteria,
             'pemain'    => $pemain,
-            'aspek'     => $aspek,
-            'posisi'    => $posisi
+            'kriteria'  => $kriteria,
+            'cek'       => count($cek) > 0 ? true : false
         ];
-        $html = view('App\Views\nilai_gap\data-gap', $data);
+        $html = view('App\Views\nilai_gap\data-gap2', $data);
         return json_encode(['nilai' => $html]);
+    }
+    public function saveGap()
+    {
+        if (!is_admin()) {
+            $pemain = $this->pemainm->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
+            $kriteria = $this->kriteriam->where('id_tim', getTimById(session('userlevel'), session('user_id'))->id)->findAll();
+        } else {
+            $pemain = $this->pemainm->findAll();
+            $kriteria = $this->kriteriam->findAll();
+        }
+
+        $data = [];
+        foreach ($pemain as $key => $row) {
+            foreach ($kriteria as $key2 => $val) {
+                $n = $key . $key2;
+                array_push($data, [
+                    'id_aspek'          => $this->request->getPost("id_aspek$n"),
+                    'id_kriteria'       => $this->request->getPost("id_kriteria$n"),
+                    'id_posisi'         => getPemainById($this->request->getPost("id_pemain$n"))->id_posisi,
+                    'id_pemain'         => $this->request->getPost("id_pemain$n"),
+                    'id_pelatih'        => session('user_id'),
+                    'nilai_kriteria'    => $this->request->getPost("nilai$n") - getKriteriaById($this->request->getPost("id_kriteria$n"))->target,
+                    'hasil'             => $this->request->getPost("nilai$n"),
+                    'hasilposisi'       => $this->request->getPost("id_posisi$n")
+                ]);
+            }
+        }
+
+        if ($this->nilai_gapm->insertBatch($data)) {
+            $data2 = [];
+            foreach ($pemain as $key => $row) {
+                foreach (getAspek() as $val) {
+                    $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $val->id)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->first();
+                    $coreCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $val->id)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+                    $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $val->id)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->first();
+                    $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $val->id)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+                    $valcore = isset($core->totalcore) ? ($core->totalcore / count($coreCount)) : 0;
+                    $valsecond = isset($second->totalsecond) ? ($second->totalsecond / count($secondCount)) : 0;
+                    array_push($data2, [
+                        'id_pemain' => $row->id,
+                        'aspek'     => $val->id,
+                        'posisi'    => $row->id_posisi,
+                        'core'      => $valcore,
+                        'second'    => $valsecond,
+                        'total'     => (($core->core / 100) * $valcore) + (($core->secondary / 100) * $valsecond)
+                    ]);
+                }
+            }
+            if ($this->hitungCfSfM->insertBatch($data2)) {
+                $status['title'] = 'success';
+                $status['type'] = 'success';
+                $status['text'] = '<strong>Done..!</strong>Berhasil ditambahkan';
+            }
+        } else {
+            $status['title'] = 'gagal';
+            $status['type'] = 'error';
+            $status['text'] = '<strong>Oh snap!</strong> Proses gagal.';
+        }
+        return json_encode($status);
     }
 
     public function simpanGap()
@@ -272,9 +349,9 @@ class Nilai_gap extends BaseController
             $key++;
             $row = explode('=', $row);
             $val[] = end($row);
-            
+
             $valKriteria = explode('%7C', end($row));
-            
+
             array_push($hasil, [
                 'id_aspek' => $id_aspek,
                 'id_kriteria' => $valKriteria[1],
@@ -321,6 +398,20 @@ class Nilai_gap extends BaseController
     public function truncate_count()
     {
         if ($this->nilai_gapm->softDeleteds() && $this->hitungCfSfM->softDeleteds()) {
+            $status['title'] = 'success';
+            $status['type'] = 'success';
+            $status['text'] = '<strong>Done..!</strong>Berhasil menghapus';
+        } else {
+            $status['title'] = 'error';
+            $status['type'] = 'error';
+            $status['text'] = '<strong>Failed..!</strong>Gagal menghapus';
+        }
+        return json_encode($status);
+    }
+
+    public function truncate_recycle()
+    {
+        if ($this->hitungCfSfM->truncate() && $this->nilai_gapm->truncate()) {
             $status['title'] = 'success';
             $status['type'] = 'success';
             $status['text'] = '<strong>Done..!</strong>Berhasil menghapus';

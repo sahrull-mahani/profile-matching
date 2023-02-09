@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <!-- <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -61,6 +61,17 @@
                         </div>
                         <div class="card-body">
                             <div id="data-gap">Data Aspek Belum Dipilih</div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Penilaian Pemain</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="data-gap"></div>
                         </div>
                     </div>
                 </div>

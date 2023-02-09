@@ -35,15 +35,11 @@
                         </div>
                         <div class="card-body">
                             <div id="toolbar">
-                                <!-- <input type="number" class="btn  btn-default" value="1" id="number-of-row">
-                                <button type="button" class="btn btn-primary" id="create" method="create" data-toggle="modal"><i class="fa fa-plus"></i> Tambah Data</button>
-                                <button type="button" class="btn btn-warning" id="edit" method="edit" disabled><i class="fa fa-edit"></i> Edit</button>
-                                <button type="button" class="btn btn-danger" id="remove" disabled><i class="fa fa-trash"></i> Hapus</button> -->
+                                <button type="button" class="btn btn-danger" id="truncate" <?= count($del) == 0 ? 'disabled' : '' ?>><i class="fa fa-trash"></i> Hapus</button>
                             </div>
                             <table id="table" data-toggle="table" data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
-                                        <th data-field="state" data-checkbox="true"></th>
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
                                         <th data-field="id_aspek">Aspek</th>

@@ -190,3 +190,13 @@ function getIdPemainByPosisi($posisi) {
     }
     return $ids;
 }
+
+function getPemainById($id) {
+    $db = db_connect();
+    return $db->table('pemain')->getWhere(['id'=>$id])->getRow();
+}
+
+function getAspek() {
+    $db = db_connect();
+    return $db->table('aspek')->get()->getResult();
+}

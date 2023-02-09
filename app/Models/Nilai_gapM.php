@@ -160,7 +160,7 @@ class Nilai_gapM extends Model
         $this->join('posisi pos', 'pos.id = nilai_gap.hasilposisi');
         $this->groupBy('nilai_gap.id_pemain');
         $this->groupBy('nilai_gap.hasilposisi');
-        $this->orderBy('nilai_gap.id_pemain', 'asc');
+        // $this->orderBy('nilai_gap.id_pemain', 'asc');
         $this->orderBy('total', 'desc');
         $this->orderBy('nilai_gap.hasilposisi', 'asc');
         $this->where('nilai_gap.deleted_at', NULL);

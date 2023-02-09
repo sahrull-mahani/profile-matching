@@ -5,33 +5,72 @@ $(document).ready(function () {
     ace[token] = csrf_hash
     $.ajaxSetup({ data: ace })
 
-    $('#aspek').hide()
-    $('#posisi').on('change', function () {
-        let val = $(this).val()
-        let valAspek = $('#aspek').val()
-        if (val != null) {
-            $('#aspek').show()
+    // ======================= OLD =====================================
+    // $('#aspek').hide()
+    // $('#posisi').on('change', function () {
+    //     let val = $(this).val()
+    //     let valAspek = $('#aspek').val()
+    //     if (val != null) {
+    //         $('#aspek').show()
+    //     }
+    //     $.ajax({
+    //         url: location.origin + '/Nilai_gap/dataGap',
+    //         data: { value: valAspek, posisi: val },
+    //         type: 'post',
+    //         success: function (res) {
+    //             let data = $.parseJSON(res)
+    //             $('#data-gap').html(data.nilai)
+    //         }
+    //     })
+    // })
+    // $('#aspek').on('change', function () {
+    //     let val = $(this).val()
+    //     let valPosisi = $('#posisi').val()
+    //     $.ajax({
+    //         url: location.origin + '/Nilai_gap/dataGap',
+    //         data: { value: val, posisi: valPosisi },
+    //         type: 'post',
+    //         success: function (res) {
+    //             let data = $.parseJSON(res)
+    //             $('#data-gap').html(data.nilai)
+    //         }
+    //     })
+    // })
+    // ======================= OLD =====================================
+
+    $.get({
+        url: location.origin + '/Nilai_gap/dataGap2',
+        success: function (res) {
+            let data = $.parseJSON(res)
+            $('#data-gap').html(data.nilai)
         }
-        $.ajax({
-            url: location.origin + '/Nilai_gap/dataGap',
-            data: { value: valAspek, posisi: val },
-            type: 'post',
-            success: function (res) {
-                let data = $.parseJSON(res)
-                $('#data-gap').html(data.nilai)
-            }
-        })
     })
-    $('#aspek').on('change', function () {
-        let val = $(this).val()
-        let valPosisi = $('#posisi').val()
-        $.ajax({
-            url: location.origin + '/Nilai_gap/dataGap',
-            data: { value: val, posisi: valPosisi },
-            type: 'post',
-            success: function (res) {
-                let data = $.parseJSON(res)
-                $('#data-gap').html(data.nilai)
+
+    $('#truncate').on('click', function (e) {
+        e.preventDefault()
+        Swal.fire({
+            title: 'Anda yakin?',
+            text: "Data akan dihapus!",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.get({
+                    url: location.origin + '/Nilai_gap/truncate_recycle',
+                    dataType: 'json',
+                    success: function(res) {
+                        Swal.fire({
+                            title: res.title,
+                            html: res.text,
+                            icon: res.type
+                        }).then((result) => {
+                            window.location.replace(window.location.href)
+                        })
+                    }
+                })
             }
         })
     })
