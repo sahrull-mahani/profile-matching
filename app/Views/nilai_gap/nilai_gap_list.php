@@ -37,34 +37,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select id="posisi" class="custom-select custom-select-sm">
-                                        <option selected disabled>Pilih Posisi</option>
-                                        <?php foreach ($posisi as $row) : ?>
-                                            <option value="<?= $row->id ?>"><?= ucwords($row->nama_posisi) ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <select id="aspek" class="custom-select custom-select-sm">
-                                        <option selected disabled>Pilih Aspek</option>
-                                        <?php foreach ($aspek as $row) : ?>
-                                            <option value="<?= $row->id ?>"><?= ucwords($row->aspek_penilaian) ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div id="data-gap">Data Aspek Belum Dipilih</div>
-                        </div>
-                    </div>
-                </div> -->
-
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -77,11 +49,11 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="card card-primary">
+                    <div class="card card-primary collapsed-card">
                         <div class="card-header">
                             <h3 class="card-title">Konversi Nilai Bobot</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -160,11 +132,11 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="card card-success collapsed-card">
+                    <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Penentu Posisi</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                             </div>
                         </div>
                         <div class="card-body">

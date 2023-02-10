@@ -45,7 +45,9 @@
                             <table id="table" data-toggle="table" data-ajax="ajaxRequest" data-side-pagination="server" data-pagination="true" data-search="true" data-show-columns="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-click-to-select="true" data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
-                                        <th data-field="state" data-checkbox="true"></th>
+                                        <?php if (is_admin()) : ?>
+                                            <th data-field="state" data-checkbox="true"></th>
+                                        <?php endif ?>
                                         <th data-field="id" data-visible="false">ID</th>
                                         <th data-field="nomor">No</th>
                                         <th data-field="aspek_penilaian">Aspek Penilaian</th>

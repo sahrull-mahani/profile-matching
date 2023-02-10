@@ -12,7 +12,7 @@
                     </tr>
                     <tr>
                         <?php foreach ($kriteria as $row) : ?>
-                            <th scope="col"><?= strtoupper($row->kriteria_penilaian) ?></th>
+                            <th scope="col"><?= $row->id_posisi . ' ' . strtoupper($row->kriteria_penilaian) ?></th>
                         <?php endforeach ?>
                     </tr>
                 </thead>

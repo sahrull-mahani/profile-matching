@@ -154,15 +154,18 @@ class Nilai_gapM extends Model
             $this->orderBy('id', 'asc');
         }
 
-        $this->select('nilai_gap.*, p.nama, pos.nama_posisi');
+        $this->select('nilai_gap.id, nilai_gap.id_pemain, p.nama, k.id_posisi, pos.nama_posisi');
         $this->selectSum('hasil', 'total');
+        $this->join('kriteria k', 'k.id = nilai_gap.id_kriteria');
         $this->join('pemain p', 'p.id = nilai_gap.id_pemain');
-        $this->join('posisi pos', 'pos.id = nilai_gap.hasilposisi');
+        $this->join('posisi pos', 'pos.id = k.id_posisi');
         $this->groupBy('nilai_gap.id_pemain');
-        $this->groupBy('nilai_gap.hasilposisi');
-        // $this->orderBy('nilai_gap.id_pemain', 'asc');
+        $this->groupBy('k.id_posisi');
+        // $this->groupBy('nilai_gap.hasilposisi');
+        $this->orderBy('nilai_gap.id_pemain', 'asc');
         $this->orderBy('total', 'desc');
-        $this->orderBy('nilai_gap.hasilposisi', 'asc');
+        $this->orderBy('k.id_posisi', 'asc');
+        // $this->orderBy('nilai_gap.hasilposisi', 'asc');
         $this->where('nilai_gap.deleted_at', NULL);
     }
     public function get_datatables_penentu_posisi()

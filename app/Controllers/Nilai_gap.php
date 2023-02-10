@@ -133,12 +133,12 @@ class Nilai_gap extends BaseController
         $data = array();
         $no = isset($_GET['offset']) ? $_GET['offset'] + 1 : 1;
         foreach ($list as $key => $rows) {
-            // if ($key % 2 == 1) continue;
+            $key++;
             $row = array();
             $row['id'] = $rows->id;
             $row['nomor'] = $no++;
             $row['id_pemain'] = ucwords($rows->nama);
-            $row['posisi'] = strtoupper($rows->nama_posisi);
+            $row['posisi'] = ($key % 2 == 1 ? '<b>' : 'Posisi Alternatif ') . strtoupper($rows->nama_posisi);
             $data[] = $row;
         }
         $output = array(
@@ -298,6 +298,9 @@ class Nilai_gap extends BaseController
             }
         }
 
+        // print_r($data);
+        // die;
+
         if ($this->nilai_gapm->insertBatch($data)) {
             $data2 = [];
             foreach ($pemain as $key => $row) {
@@ -331,69 +334,69 @@ class Nilai_gap extends BaseController
         return json_encode($status);
     }
 
-    public function simpanGap()
-    {
-        $data = $this->request->getVar('data');
-        $id_aspek = $this->request->getVar('id_aspek');
-        $id_posisi = $this->request->getVar('id_posisi');
-        $exp = explode('&', $data);
-        $hasil = [];
-        $hasil2 = [];
-        if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_posisi', $id_posisi)->where('id_pelatih', session('user_id'))->where('deleted_at', null)->countAllResults() > 0) {
-            $status['title'] = 'gagal';
-            $status['type'] = 'error';
-            $status['text'] = '<strong>Oh snap!</strong> Aspek sudah terdaftar.';
-            return json_encode($status);
-        }
-        foreach ($exp as $key => $row) {
-            $key++;
-            $row = explode('=', $row);
-            $val[] = end($row);
+    // public function simpanGap()
+    // {
+    //     $data = $this->request->getVar('data');
+    //     $id_aspek = $this->request->getVar('id_aspek');
+    //     $id_posisi = $this->request->getVar('id_posisi');
+    //     $exp = explode('&', $data);
+    //     $hasil = [];
+    //     $hasil2 = [];
+    //     if ($this->nilai_gapm->where('id_aspek', $id_aspek)->where('id_posisi', $id_posisi)->where('id_pelatih', session('user_id'))->where('deleted_at', null)->countAllResults() > 0) {
+    //         $status['title'] = 'gagal';
+    //         $status['type'] = 'error';
+    //         $status['text'] = '<strong>Oh snap!</strong> Aspek sudah terdaftar.';
+    //         return json_encode($status);
+    //     }
+    //     foreach ($exp as $key => $row) {
+    //         $key++;
+    //         $row = explode('=', $row);
+    //         $val[] = end($row);
 
-            $valKriteria = explode('%7C', end($row));
+    //         $valKriteria = explode('%7C', end($row));
 
-            array_push($hasil, [
-                'id_aspek' => $id_aspek,
-                'id_kriteria' => $valKriteria[1],
-                'id_posisi' => $id_posisi,
-                'id_pemain' => $valKriteria[2],
-                'id_pelatih' => session('user_id'),
-                'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target,
-                'hasil' => $valKriteria[0],
-                'hasilposisi' => end($valKriteria),
-            ]);
-        }
+    //         array_push($hasil, [
+    //             'id_aspek' => $id_aspek,
+    //             'id_kriteria' => $valKriteria[1],
+    //             'id_posisi' => $id_posisi,
+    //             'id_pemain' => $valKriteria[2],
+    //             'id_pelatih' => session('user_id'),
+    //             'nilai_kriteria' => $valKriteria[0] - getKriteriaById($valKriteria[1])->target,
+    //             'hasil' => $valKriteria[0],
+    //             'hasilposisi' => end($valKriteria),
+    //         ]);
+    //     }
 
-        if ($this->nilai_gapm->insertBatch($hasil)) {
-            $pemain = $this->pemainm->where('id_posisi', $id_posisi)->where('id_tim', getTimById('pelatih', session('user_id'))->id)->findAll();
-            foreach ($pemain as $row) {
-                $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->first();
-                $coreCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
-                $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->first();
-                $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
-                $valcore = isset($core->totalcore) ? ($core->totalcore / count($coreCount)) : 0;
-                $valsecond = isset($second->totalsecond) ? ($second->totalsecond / count($secondCount)) : 0;
-                array_push($hasil2, [
-                    'id_pemain' => $row->id,
-                    'aspek'     => $id_aspek,
-                    'posisi'    => $id_posisi,
-                    'core'      => $valcore,
-                    'second'    => $valsecond,
-                    'total'     => (($core->core / 100) * $valcore) + (($core->secondary / 100) * $valsecond)
-                ]);
-            }
-            if ($this->hitungCfSfM->insertBatch($hasil2)) {
-                $status['title'] = 'success';
-                $status['type'] = 'success';
-                $status['text'] = '<strong>Done..!</strong>Berhasil ditambahkan';
-            }
-        } else {
-            $status['title'] = 'gagal';
-            $status['type'] = 'error';
-            $status['text'] = '<strong>Oh snap!</strong> Proses gagal.';
-        }
-        return json_encode($status);
-    }
+    //     if ($this->nilai_gapm->insertBatch($hasil)) {
+    //         $pemain = $this->pemainm->where('id_posisi', $id_posisi)->where('id_tim', getTimById('pelatih', session('user_id'))->id)->findAll();
+    //         foreach ($pemain as $row) {
+    //             $core = $this->nilai_gapm->select('a.*')->selectSum('bobot_nilai', 'totalcore')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->first();
+    //             $coreCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->join('aspek a', 'a.id = nilai_gap.id_aspek')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'core')->findAll();
+    //             $second = $this->nilai_gapm->selectSum('bobot_nilai', 'totalsecond')->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->first();
+    //             $secondCount = $this->nilai_gapm->join('kriteria k', 'k.id = nilai_gap.id_kriteria')->join('nilai_bobot nb', 'nb.selisih = nilai_gap.nilai_kriteria')->where('nilai_gap.id_aspek', $id_aspek)->where('nilai_gap.id_pemain', $row->id)->where('type', 'secondary')->findAll();
+    //             $valcore = isset($core->totalcore) ? ($core->totalcore / count($coreCount)) : 0;
+    //             $valsecond = isset($second->totalsecond) ? ($second->totalsecond / count($secondCount)) : 0;
+    //             array_push($hasil2, [
+    //                 'id_pemain' => $row->id,
+    //                 'aspek'     => $id_aspek,
+    //                 'posisi'    => $id_posisi,
+    //                 'core'      => $valcore,
+    //                 'second'    => $valsecond,
+    //                 'total'     => (($core->core / 100) * $valcore) + (($core->secondary / 100) * $valsecond)
+    //             ]);
+    //         }
+    //         if ($this->hitungCfSfM->insertBatch($hasil2)) {
+    //             $status['title'] = 'success';
+    //             $status['type'] = 'success';
+    //             $status['text'] = '<strong>Done..!</strong>Berhasil ditambahkan';
+    //         }
+    //     } else {
+    //         $status['title'] = 'gagal';
+    //         $status['type'] = 'error';
+    //         $status['text'] = '<strong>Oh snap!</strong> Proses gagal.';
+    //     }
+    //     return json_encode($status);
+    // }
 
     public function truncate_count()
     {
